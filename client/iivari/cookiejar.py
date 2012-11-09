@@ -44,7 +44,7 @@ class CookieJar(QtNetwork.QNetworkCookieJar):
                 f.close()
                 self.setAllCookies(cookies)
                 if len(cookies) > 0:
-                    logger.info('read %d cookies from "%s"' % (
+                    logger.debug('read %d cookies from "%s"' % (
                         len(cookies), self.cookiejar_file))
             except (IOError, TypeError), e:
                 logger.warn('Error while restoring cookies from "%s": %s' % (self.cookiejar_file, e))

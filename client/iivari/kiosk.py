@@ -109,6 +109,6 @@ if __name__ == "__main__":
     window.raise_()
 
     # start application and quit on exit
-    logger.debug("Initialization complete. Launching application.")
+    logger.info("Initialization complete. Launching application.")
     sys.exit(app.exec_())
 
