@@ -10,20 +10,20 @@ fi:
   flash:
     actions:
       create:
-        success: "Uusi %{resource_name} on luotu onnistuneesti."
+        notice: "Uusi %{resource_name} on luotu onnistuneesti."
       update:
-        success: "%{resource_name}tietojen päivitys onnistui."
+        notice: "%{resource_name}tietojen päivitys onnistui."
       destroy:
-        success: "%{resource_name} poistettiin."
-        error: "%{resource_name}n poistaminen epäonnistui."
+        notice: "%{resource_name} poistettiin."
+        alert: "%{resource_name}n poistaminen epäonnistui."
     user_sessions:
       create:
-        success: Kirjautuminen onnistui
+        notice: Kirjautuminen onnistui
     slides:
       create:
-        success: Uuden ruudun lisäys onnistui!
+        notice: Uusi ruutu lisätty
       update:
-        success: Ruuduntietojen päivitys onnistui
+        notice: Ruutu päivitettiin
   activerecord:
     models:
       channel: Kanava
@@ -42,6 +42,7 @@ fi:
         hostname: Nimi
         active: Aktiivinen
         channel: Kanava
+        last_seen_at: Viimeksi aktiivinen
       slide_timer:
         start_datetime: Alkupäivä ja -aika
         end_datetime: Loppupäivä ja -aika
@@ -80,6 +81,7 @@ fi:
     destroy: Poista
     new_channel: Uusi kanava
     new_slides: Lisää uusi ruutu
+    doc_upload: Lisää ruutuja pdf-dokumentista
     logout: Kirjaudu ulos
     channels: Kanavat
     displays: Näytöt
@@ -108,9 +110,14 @@ fi:
     edit:
       title: Kanavan tietojen muokkaus
     form:
-      gold: Kulta
-      green: Vihreä
-      cyan: Sinivihreä
+      theme: Teema
+    doc_upload:
+      label: Lisää ruutuja pdf-dokumentista
+      submit: Lähetä
+  themes:
+    gold: Kulta
+    green: Vihreä
+    cyan: Sinivihreä
   slides:
     show:
       confirm: Haluatko varmasti poistaa ruudun?
@@ -119,6 +126,7 @@ fi:
       title: "<b>%{name}</b> kanavan ruudut"
       confirm: Haluatko varmasti poistaa ruudun?
       drag: Raahaa
+      inactive_slide: Ruutu ei ole aktiivinen
     new:
       title: Uusi ruutu
     template:
@@ -141,12 +149,14 @@ fi:
   displays:
     show:
       channel_not_selected: Ei valittu
+      not_available: Ei tietoa
     edit:
       title: Näytön tietojen muokkaus
     new:
       title: Uus näyttö
     index:
       title: Lista näytöistä
+      not_available: Ei tietoa
   slide_timers:
     list:
       empty: Ei määritetty
@@ -182,6 +192,8 @@ fi:
       logged_in_as: Kirjauduttu sisään käyttäjänä
       tools: Työkalut
       schools: Koulut
+    screen:
+      offline: verkkoyhteysvirhe
   notices:
     login_required: Sinun täytyy kirjautua päästäksesi tälle sivulle
     not_access: Sinulla ei ole riittäviä oikeuksia toiminnon suorittamiseksi

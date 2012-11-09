@@ -13,6 +13,10 @@ Iivari::Application.routes.draw do
 
   match '/channels/welcome', :to => "channels#welcome", :as => 'welcome'
   resources :channels, :path => ':school_id/channels' do
+    get :doc_upload
+    post :doc_upload
+    get :doc_upload_progress
+
     resources :slides do
       post :sort, :on => :collection
       member do
@@ -30,9 +34,11 @@ Iivari::Application.routes.draw do
 
   match 'conductor', :to => "screen#conductor", :as => "conductor_screen"
   match 'slides.json', :to => "screen#slides", :format => :json, :as => "conductor_slides"
+  match 'display_ctrl.json', :to => "screen#display_ctrl", :format => :json, :as => "conductor_display_ctrl"
   match 'image/:template/:image', :to => "screen#image", :as => "image_screen"
   match 'displayauth', :to => "screen#displayauth", :as => "display_authentication"
   match "screen.manifest", :to => "screen#manifest", :as => "manifest_screen"
+  match 'ping', :to => "screen#ping"
 
   resources :user_sessions
 
@@ -53,12 +59,12 @@ Iivari::Application.routes.draw do
   # Sample resource route with options:
   #   resources :products do
   #     member do
-  #       get :short
-  #       post :toggle
+  #       get 'short'
+  #       post 'toggle'
   #     end
   #
   #     collection do
-  #       get :sold
+  #       get 'sold'
   #     end
   #   end
 
@@ -72,7 +78,7 @@ Iivari::Application.routes.draw do
   #   resources :products do
   #     resources :comments
   #     resources :sales do
-  #       get :recent, :on => :collection
+  #       get 'recent', :on => :collection
   #     end
   #   end
 

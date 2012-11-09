@@ -1,30 +1,69 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.3'
+gem 'rails', '3.2.7'
 
+# Bundle edge Rails instead:
+# gem 'rails',     :git => 'git://github.com/rails/rails.git'
+
+gem 'json'
 gem 'jquery-rails'
+gem 'rails-backbone'
+
+# Rails 3.1 - Asset Pipeline
+group :assets do
+  gem 'sass-rails',   '> 3.1'
+  gem 'coffee-rails', '> 3.2'
+  gem 'uglifier', '>= 1.2'
+end
+
+# user management and puavo integration
+gem 'ruby-ldap', :require => 'ldap'
+gem "authlogic", '>= 3'
+gem 'declarative_authorization'
+gem 'puavo-client'
+
+# httparty "makes consuming restful web services dead easy."
+gem 'httparty'
+
+# ordered many-to-many associations
+gem 'acts_as_list'
+
+# rails3-compatible tiny_mce fork
+gem 'tinymce-rails', :git => "git://github.com/spohlenz/tinymce-rails.git"
+
+# iivari features
 gem "simple_form"
 gem "responders"
-gem 'tiny_mce'
-gem 'acts_as_list'
 gem 'rmagick', :require => 'RMagick'
-gem 'ruby-ldap', :require => 'ldap'
-gem "authlogic"
-gem 'httparty'
-gem 'puavo-client'
-gem 'declarative_authorization'
-gem 'json'
+gem "docsplit"
 
 group :development do
-  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'sqlite3'
   gem "ruby-debug"
   gem 'mongrel'
-  gem 'rspec-rails'
+  gem 'database_cleaner'
+  gem 'guard-livereload'
+end
+
+group :test do
+  gem 'sinatra'
+  gem 'capybara'
+  # rspec syntax has changed, lock down to this version
+  gem 'rspec', '2.8.0'
+  gem 'rspec-rails', '2.8.1'
   gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'database_cleaner'
-  gem 'capybara'
-  gem 'sinatra'
+  gem 'factory_girl_rails'
+
+  # use jasmine-headless-webkit to run the suite on cli
+  # bundle exec jasmine-headless-webkit
+  #gem 'jasmine', :git => "git://github.com/pivotal/jasmine-gem.git"
+  gem 'jasmine', '~> 1.2.0'
+  gem 'jasmine-headless-webkit', :git => "git://github.com/johnbintz/jasmine-headless-webkit.git"
+
+  # an alternative way to run headlessly in browser via Xvfb
+  # rake jasmine:ci:headless
+  #gem 'headless'
 end
 
 group :production do
