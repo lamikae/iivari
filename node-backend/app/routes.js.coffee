@@ -26,4 +26,11 @@ module.exports = (app, js, css, config) ->
         res.render('index', { title: 'Express greetings!' })
 
 
+    app.get "/client", (req, res) ->
+        console.log "GET /client"
+        try
+            res.render 'client', { theme: "cyan" }
+        catch e
+            console.log e
+
 
