@@ -1,0 +1,6 @@
+#!/bin/sh
+./node_modules/.bin/supervisor \
+	-w site \
+	--extensions 'node|js|coffee' \
+	site.js
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+cd /opt/iivari/node-backend
+export NODE_ENV=development
+npm start 2>&1 | tee -a log/$NODE_ENV.log

@@ -1,0 +1,12 @@
+Source: iivari-backend
+Maintainer: lamikae <mikael.lammentausta+github+@gmail.com>
+Section: misc
+Priority: optional
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.4
+
+Package: iivari-backend
+Architecture: all
+Depends: ${misc:Depends}, nodejs, npm
+Description: Iivari node.js backend for local files
+ .

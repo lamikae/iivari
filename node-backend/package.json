@@ -1,0 +1,29 @@
+{
+    "name" : "iivari-backend"
+    , "version": "0.1.0"
+    , "scripts": {
+        "test": "node_modules/.bin/mocha"
+        , "start": "node site.js"
+    }
+    , "main": "./lib/index"
+    , "dependencies": {
+        "coffee-script": ""
+        , "underscore": ""
+        , "async": ""
+        , "stylus": ""
+        , "nib": ""
+        , "express": "2.5.11"
+        , "piler": ""
+        , "handlebars": ""
+        , "hbs": ""
+        , "socket.io": ""
+        , "zlib": ""
+        , "node-glob": "git://github.com/isaacs/node-glob.git"
+    }
+    , "devDependencies": {
+          "mocha": ""
+        , "expect.js": ""
+        , "supervisor": ""
+        , "node-inspector": ""
+    }
+}
