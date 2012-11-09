@@ -1,0 +1,4 @@
+= 0.1.0
+Initial import.
+The node.js backend can index files from the local filesystem
+and produce views for iivari-client.
