@@ -115,9 +115,11 @@ class MainWebView(QtWebKit.QWebView):
         """
         if cache_path is not None:
             qsettings.enablePersistentStorage(cache_path)
-            # uncertain whether LocalContentCanAccessRemoteUrls is needed even when using offline cache
-            # FIXME: check, and disable this if unneeded.
-            qsettings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)
+
+        # allow http page from server access local file:// urls
+        QtWebKit.QWebSecurityOrigin.addLocalScheme("http")
+        qsettings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, True)
+        qsettings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)
 
         #qsettings.setAttribute(
         #    QtWebKit.QWebSettings.DeveloperExtrasEnabled, True)
@@ -138,6 +140,9 @@ class MainWebView(QtWebKit.QWebView):
             'LocalContentCanAccessRemoteUrls: %s' % (
                 qsettings.testAttribute(
                     QWebSettings.LocalContentCanAccessRemoteUrls)),
+            'LocalContentCanAccessFileUrls: %s' % (
+                qsettings.testAttribute(
+                    QWebSettings.LocalContentCanAccessFileUrls)),
 
             ]))
 
