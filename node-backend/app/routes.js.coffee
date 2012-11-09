@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 http = require "http"
 homeDir = "#{__dirname}/.."
+slides = require "#{homeDir}/app/slides.js"
 
 module.exports = (app, js, css, config) ->
 
@@ -34,3 +35,9 @@ module.exports = (app, js, css, config) ->
             console.log e
 
 
+    app.get "/slides", (req, res) ->
+        console.log "GET /slides"
+        try
+            res.json slides.FileSystemSlides.find()
+        catch e
+            console.log e
