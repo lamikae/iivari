@@ -17,6 +17,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
 import os, sys
+import urllib2
+from time import sleep
 import re
 import hashlib
 import __builtin__
@@ -139,8 +141,17 @@ class MainWebView(QtWebKit.QWebView):
 
             ]))
 
-        # set URL and launch the request
+        # wait for server
         url = self.options.get('url')
+        ping = False
+        while(ping is False):
+            try:
+                ping = urllib2.urlopen(url).read()
+            except urllib2.URLError, e:
+                logger.warn("%s does not respond: %s" % (url, e))
+                sleep(3)
+
+        # launch the request
         logger.info("url: %s" % url)
         self.setUrl(QtCore.QUrl(url))
 
