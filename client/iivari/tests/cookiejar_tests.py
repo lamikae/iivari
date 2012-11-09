@@ -19,7 +19,7 @@ class CookieJarTests(unittest.TestCase):
 
     cookiejar_file = 'cookiejar_test.txt'
     server = None
-    
+
     def setUp(self):
         # Ctrl-C halts the test suite
         signal.signal( signal.SIGINT, signal.SIG_DFL )
@@ -37,7 +37,7 @@ class CookieJarTests(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.cookiejar_file):
             os.remove(self.cookiejar_file)
-    
+
     def _exec_request__return_cookies(self, url):
         # use test txt file to store cookies
         nm = MainNetworkAccessManager(cookie_path=self.cookiejar_file)
@@ -57,7 +57,7 @@ class CookieJarTests(unittest.TestCase):
         """Create cookie"""
         _jar = CookieJar(self.cookiejar_file)
         self.assert_(_jar)
-    
+
     def test_unauthorized(self):
         """error 401"""
         url = self.server+'/ping'
@@ -106,4 +106,4 @@ class CookieJarTests(unittest.TestCase):
         # execute a second request, session should not change
         cookies = self._exec_request__return_cookies(url)
         self.assertEquals(session1, cookies[0].value().__str__())
-        
+

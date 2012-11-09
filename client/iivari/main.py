@@ -2,18 +2,18 @@
 """
 Copyright © 2011 - 2012 Opinsys Oy
 
-This program is free software; you can redistribute it and/or modify it 
-under the terms of the GNU General Public License as published by the 
-Free Software Foundation; either version 2 of the License, or (at your 
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
 option) any later version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 Public License for more details.
 
-You should have received a copy of the GNU General Public License along 
-with this program; if not, write to the Free Software Foundation, Inc., 
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
 import os, sys
@@ -36,7 +36,7 @@ class MainWindow(QtGui.QMainWindow):
     """The main window consists of a single web view with JavaScript, HTML5 offline cache manifest and localStorage support.
     """
     webView = None
-    
+
     def __init__(self, **kwargs):
         QtGui.QMainWindow.__init__(self)
 
@@ -54,14 +54,14 @@ class MainWindow(QtGui.QMainWindow):
 
 
 class MainWebView(QtWebKit.QWebView):
-    
+
     display = None
     repl = None
     options = None
-    
+
     def __init__(self, centralwidget, **kwargs):
         """MainWebView loads the page, and attaches interfaces to it.
-        
+
         Keyword arguments:
           - url
           - hostname
@@ -108,7 +108,7 @@ class MainWebView(QtWebKit.QWebView):
         Enable application to work in offline mode.
         Use HTML5 cache manifest for static content,
         and jquery.offline for dynamic JSON content.
-        
+
         @see http://diveintohtml5.info/offline.html
         """
         if cache_path is not None:
@@ -119,7 +119,7 @@ class MainWebView(QtWebKit.QWebView):
 
         #qsettings.setAttribute(
         #    QtWebKit.QWebSettings.DeveloperExtrasEnabled, True)
-        
+
         # write qsettings to log
         logger.debug("\n * ".join([
             ' --- QWebSettings ---',
@@ -136,7 +136,7 @@ class MainWebView(QtWebKit.QWebView):
             'LocalContentCanAccessRemoteUrls: %s' % (
                 qsettings.testAttribute(
                     QWebSettings.LocalContentCanAccessRemoteUrls)),
-            
+
             ]))
 
         # set URL and launch the request
@@ -148,8 +148,8 @@ class MainWebView(QtWebKit.QWebView):
     def create_display(self, ok):
         """Display is a JavaScript object proxy.
 
-        It connects window.display JavaScript signals 
-        to Python methods. 
+        It connects window.display JavaScript signals
+        to Python methods.
 
         Python can also emit signals to JavaScript "slots"
         through this object.
@@ -185,7 +185,7 @@ class MainWebPage(QtWebKit.QWebPage):
 
     def javaScriptConsoleMessage(self, message, lineNumber, sourceID):
         """Catches JavaScript console messages and errors from a QWebPage.
-        
+
         Differentiates between normal messages and errors by matching 'Error' in the string.
         """
         msg_tmpl = '(%s:%i)\n%s' % (sourceID, lineNumber, '%s')
@@ -212,10 +212,10 @@ class MainWebPage(QtWebKit.QWebPage):
     @QtCore.Slot()
     def shouldInterruptJavaScript(self):
         """Interrupt JavaScript execution (restarts process).
-        
+
         This slot should be called when JavaScript
         execution seems to be taking too long.
-        
+
         NOTE: this slot is called only in PySide >= 1.0.7.
         """
         pid = os.getpid()
@@ -226,7 +226,7 @@ class MainWebPage(QtWebKit.QWebPage):
 
 
 class MainNetworkAccessManager(QtNetwork.QNetworkAccessManager):
-    """NetworkAccessManager interface. 
+    """NetworkAccessManager interface.
 
     Logs possible network errors.
     Handles the cookie jar, when caching is enabled.
@@ -257,10 +257,10 @@ class MainNetworkAccessManager(QtNetwork.QNetworkAccessManager):
     @QtCore.Slot()
     def _finished(self, reply):
         """Logs possible network errors.
-        
-        After the request has finished, it is the responsibility of the user 
-        to delete the PySide.QtNetwork.QNetworkReply object at an appropriate 
-        time. Do not directly delete it inside the slot connected to 
+
+        After the request has finished, it is the responsibility of the user
+        to delete the PySide.QtNetwork.QNetworkReply object at an appropriate
+        time. Do not directly delete it inside the slot connected to
         QNetworkAccessManager.finished().
         You can use the QObject.deleteLater() function.
         @see http://doc.qt.nokia.com/latest/qnetworkaccessmanager.html#details

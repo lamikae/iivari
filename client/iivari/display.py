@@ -3,18 +3,18 @@
 """
 Copyright © 2011 Opinsys Oy
 
-This program is free software; you can redistribute it and/or modify it 
-under the terms of the GNU General Public License as published by the 
-Free Software Foundation; either version 2 of the License, or (at your 
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
 option) any later version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 Public License for more details.
 
-You should have received a copy of the GNU General Public License along 
-with this program; if not, write to the Free Software Foundation, Inc., 
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
 import os, sys
@@ -29,12 +29,12 @@ logger = getLogger(__name__)
 
 class Display(QtCore.QObject):
     """JavaScript window and Python messaging object."""
-    
+
     page = None
     hostname = None
     # save startup time to check later when refresh signal is called.
     startup_time = time()
-    
+
     def __init__(self, page, **kwargs):
         QtCore.QObject.__init__(self)
         self.page = page
@@ -66,9 +66,9 @@ class Display(QtCore.QObject):
         The refresh signal will kill the running process, which hopefully will
         be restored by a background daemon in production environment.
         The refresh signal will not activate if the process has been alive less
-        than 10 minutes. This is the time frame in which the JavaScript 
+        than 10 minutes. This is the time frame in which the JavaScript
         display control will send this signal for a given timer.
-        
+
         The offline cache will not cleared.
         For the JavaScript and other assets to be updated, the manifest revision
         needs to be updated.

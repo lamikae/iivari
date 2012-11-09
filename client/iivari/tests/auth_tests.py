@@ -34,7 +34,7 @@ class AuthenticationTests(unittest.TestCase):
         _url = urlsplit(settings.SERVER_BASE)
         self.urlbase = "%s://%s/" % (_url.scheme, _url.netloc)
 
-        # in production setup this key is saved on file 
+        # in production setup this key is saved on file
         key = self.generate_and_verify_key(
             username=self.authlogic_username,
             password=self.authlogic_userpass,

@@ -15,13 +15,13 @@ os.environ['PATH'] = "%s:%s" % (iivari_bin, os.environ['PATH'])
 
 
 class DisplayTests(unittest.TestCase):
-    
+
     status_file = DISPLAYSTATUS_PATH
 
     def setUp(self):
         # Ctrl-C halts the test suite
         signal.signal( signal.SIGINT, signal.SIG_DFL )
-        
+
     def tearDown(self):
         if os.path.exists(self.status_file):
             os.remove(self.status_file)
