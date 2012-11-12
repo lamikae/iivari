@@ -74,14 +74,14 @@ app.configure ->
             source = fs.readFileSync rootDir + "/views/client/#{ name }.hbs"
 
     # assets
-    js.addFile "#{homeDir}/assets/javascripts/jquery.js"
-    js.addFile "#{homeDir}/assets/javascripts/jquery-ui.js"
-    js.addFile "#{homeDir}/assets/javascripts/underscore.js"
-    js.addFile "#{homeDir}/assets/javascripts/jquery.superslides.js"
-    js.addFile "#{homeDir}/assets/javascripts/transparency.js"
-    js.addFile "#{homeDir}/assets/javascripts/moment.js"
-    js.addFile "#{homeDir}/assets/javascripts/moment-fi.js"
-    css.addFile "#{homeDir}/assets/stylesheets/jquery-ui.css"
+    js.addFile "#{homeDir}/vendor/javascripts/jquery.js"
+    js.addFile "#{homeDir}/vendor/javascripts/jquery-ui.js"
+    js.addFile "#{homeDir}/vendor/javascripts/underscore.js"
+    js.addFile "#{homeDir}/vendor/javascripts/jquery.superslides.js"
+    js.addFile "#{homeDir}/vendor/javascripts/transparency.js"
+    js.addFile "#{homeDir}/vendor/javascripts/moment.js"
+    js.addFile "#{homeDir}/vendor/javascripts/moment-fi.js"
+    css.addFile "#{homeDir}/vendor/stylesheets/jquery-ui.css"
 
     # app
     js.addFile "#{homeDir}/app/client.js.coffee"
