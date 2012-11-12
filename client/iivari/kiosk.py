@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
+import re
 import sys
 import signal
 import urlparse
@@ -27,9 +28,9 @@ import iivari
 def process_args():
     parser = OptionParser()
     parser.add_option(
-        "-n", "--hostname", action="store", dest="hostname",help="kiosk hostname for the server (overrides autodetect)")
+        "-n", "--hostname", action="store", dest="hostname",help="client hostname for the server (overrides autodetect)")
     parser.add_option(
-        "-s", "--size", action="store", dest="size",help="kiosk screen resolution (overrides autodetect)")
+        "-s", "--size", action="store", dest="size",help="client screen resolution (overrides autodetect)")
     parser.add_option(
         "-r", "--repl", action="store_true", dest="use_repl",help="launch JavaScript REPL for debugging")
     parser.add_option("-u", "--urlbase", action="store", dest="urlbase",
@@ -39,7 +40,7 @@ def process_args():
 
 
 if __name__ == "__main__":
-    """Iivari-kiosk startup.
+    """Iivari-client startup.
 
     Invoke from the command line:
 
@@ -55,8 +56,9 @@ if __name__ == "__main__":
     (opts, args) = process_args()
 
     # Prints PySide and the Qt version used to compile PySide
-    logger.info(' *\n * Initialising iivari-kiosk %s\n * PySide version %s\n * Qt version %s\n *' % (
+    logger.info(' *\n * Initialising iivari-client %s\n * Python %s\n * PySide version %s\n * Qt version %s\n *' % (
         iivari.__version__,
+        re.split(" ", sys.version)[0],
         PySide.__version__,
         PySide.QtCore.__version__))
 
