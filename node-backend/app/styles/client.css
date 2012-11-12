@@ -130,9 +130,9 @@ html, body, .footer{
       color-stop(0.8, #d38a00),
       to(#ca8500)
       );
-    background-image: -moz-linear-gradient(bottom, 
+    background-image: -moz-linear-gradient(bottom,
       #f1b500, #e9ad02, #e3a001, #d99300, #d38a00, #ca8500);
-    background-image: -o-linear-gradient(bottom, 
+    background-image: -o-linear-gradient(bottom,
       #f1b500, #e9ad02, #e3a001, #d99300, #d38a00, #ca8500);
 }
 .title_container.gold {
@@ -146,9 +146,9 @@ html, body, .footer{
       color-stop(0.8, #d38a00),
       to(#ca8500)
       );
-    background-image: -moz-linear-gradient(top, 
+    background-image: -moz-linear-gradient(top,
       #f1b500, #e9ad02, #e3a001, #d99300, #d38a00, #ca8500);
-    background-image: -o-linear-gradient(top, 
+    background-image: -o-linear-gradient(top,
       #f1b500, #e9ad02, #e3a001, #d99300, #d38a00, #ca8500);
 }
 
@@ -163,9 +163,9 @@ html, body, .footer{
       color-stop(0.8, #00938a),
       to(#008a82)
       );
-    background-image: -moz-linear-gradient(bottom, 
+    background-image: -moz-linear-gradient(bottom,
       #00bfb4, #00b1a7, #00a69c, #009f96, #00938a, #008a82);
-    background-image: -o-linear-gradient(bottom, 
+    background-image: -o-linear-gradient(bottom,
       #00bfb4, #00b1a7, #00a69c, #009f96, #00938a, #008a82);
 }
 .title_container.cyan {
@@ -179,9 +179,9 @@ html, body, .footer{
       color-stop(0.8, #00938a),
       to(#008a82)
       );
-    background-image: -moz-linear-gradient(top, 
+    background-image: -moz-linear-gradient(top,
       #00bfb4, #00b1a7, #00a69c, #009f96, #00938a, #008a82);
-    background-image: -o-linear-gradient(top, 
+    background-image: -o-linear-gradient(top,
       #00bfb4, #00b1a7, #00a69c, #009f96, #00938a, #008a82);
 }
 
@@ -196,9 +196,9 @@ html, body, .footer{
       color-stop(0.8, #afd400),
       to(#ebece5)
       );
-    background-image: -moz-linear-gradient(bottom, 
+    background-image: -moz-linear-gradient(bottom,
       #d4f835, #c9f600, #c3ed00, #b8e000, #afd400, #ebece5);
-    background-image: -o-linear-gradient(bottom, 
+    background-image: -o-linear-gradient(bottom,
       #d4f835, #c9f600, #c3ed00, #b8e000, #afd400, #ebece5);
 }
 .title_container.green {
@@ -212,9 +212,9 @@ html, body, .footer{
       color-stop(0.8, #afd400),
       to(#ebece5)
       );
-    background-image: -moz-linear-gradient(top, 
+    background-image: -moz-linear-gradient(top,
       #d4f835, #c9f600, #c3ed00, #b8e000, #afd400, #ebece5);
-    background-image: -o-linear-gradient(top, 
+    background-image: -o-linear-gradient(top,
       #d4f835, #c9f600, #c3ed00, #b8e000, #afd400, #ebece5);
 }
 
