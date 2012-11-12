@@ -73,21 +73,21 @@ app.configure ->
             # we can cache it in production
             source = fs.readFileSync rootDir + "/views/client/#{ name }.hbs"
 
-    # assets
+    # vendor assets
+    css.addFile "#{homeDir}/vendor/stylesheets/jquery-ui.css"
     js.addFile "#{homeDir}/vendor/javascripts/jquery.js"
     js.addFile "#{homeDir}/vendor/javascripts/jquery-ui.js"
     js.addFile "#{homeDir}/vendor/javascripts/underscore.js"
-    js.addFile "#{homeDir}/vendor/javascripts/jquery.superslides.js"
     js.addFile "#{homeDir}/vendor/javascripts/transparency.js"
     js.addFile "#{homeDir}/vendor/javascripts/moment.js"
     js.addFile "#{homeDir}/vendor/javascripts/moment-fi.js"
-    css.addFile "#{homeDir}/vendor/stylesheets/jquery-ui.css"
 
     # app
-    js.addFile "#{homeDir}/app/client.js.coffee"
     css.addFile "#{homeDir}/app/styles/main.styl"
     css.addFile "#{homeDir}/app/styles/reset.styl"
     css.addFile "#{homeDir}/app/styles/client.css"
+    js.addFile "#{homeDir}/app/client.js.coffee"
+    js.addFile "#{homeDir}/app/jquery.superslides.coffee"
 
 
 app.configure "development", ->
