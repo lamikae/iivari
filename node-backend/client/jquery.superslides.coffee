@@ -173,13 +173,51 @@ animate = (direction) ->
         else
           position = direction = 0
 
+
+    def1 = new $.Deferred()
+    $children.eq(this.current).fadeOut(200, "linear", (=> def1.resolve()))
+    current_out = def1.promise()
+    current_out.done ->
+      # alert "out"
+    current_out.fail ->
+
     this.current = next
     $children.removeClass('current')
 
+    def2 = new $.Deferred()
+    current_in = def2.promise()
+    current_in.done ->
+      # console.log this.current
+      # reset and show next
+      $children.eq(next).css
+        left: width
+        zIndex: 2
+
+      # reset previous slide
+      $children.eq(prev).css
+        left: width
+        zIndex: 0
+
+      # reset control position
+      $control.css
+        left: -width
+
+      $children.eq(this.current).addClass('current')
+
+      if first_load
+        $container.trigger('slides.initialized')
+        first_load = false
+
+      animating = false
+      $container.trigger('slides.animated', [this.current, next, prev])
+
     $children.eq(this.current).css
       left: position
-      display: 'block'
+    $children.eq(this.current).fadeIn(200, "linear", (=> def2.resolve()))
 
+    return this.current
+
+###
     $control.animate(
       useTranslate3d: (if is_mobile then true else false)
       left: direction
@@ -211,7 +249,8 @@ animate = (direction) ->
       animating = false
       $container.trigger('slides.animated', [this.current, next, prev])
     )
-    this.current
+###
+
 
 
 # Plugin
