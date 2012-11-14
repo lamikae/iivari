@@ -1,3 +1,11 @@
+= 0.3.0
+New features:
+  * fade in/out transition effect
+  * refactor image title into transparent overlay
+  * implement notification area
+  * implement keyboard control (pause, prev, next)
+
+
 = 0.2.0
 Refactoring.
 Added tests.
