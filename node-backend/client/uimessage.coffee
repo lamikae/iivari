@@ -4,6 +4,7 @@
 class UIMessage
 
   container = null
+  visible = true
 
   constructor: (options) ->
     @container = $(".#{options.container_class}")
@@ -18,21 +19,31 @@ class UIMessage
     if options.css
       @css options.css
 
-    @container.hide()
+    unless visible
+      @container.hide()
 
   css: (params) =>
     @container.css params
     return this
 
   show: (text, delay) =>
-    # console.log "#{@container.selector} - #{text}"
     @container.text(text)
+    return unless visible
+    console.log "#{@container.selector} - #{text}"
     @container.fadeIn("fast")
     if delay
       setTimeout @clear, delay
 
   clear: =>
     @container.fadeOut("slow", => @container.text(""))
+
+  toggle: =>
+    if visible
+      @container.fadeOut()
+      visible = false
+    else
+      @container.fadeIn()
+      visible = true
 
 
 # Plugin

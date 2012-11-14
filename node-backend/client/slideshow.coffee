@@ -61,6 +61,7 @@ class Iivari.Models.Slideshow
 
     notifier_ui = null
     title_ui = null
+    playing = true
 
     constructor: (@json_url, @data_update_interval, @preview, @cache) ->
         @slideData = null
@@ -95,6 +96,54 @@ class Iivari.Models.Slideshow
         if (not @preview) and @json_url and @data_update_interval
             setInterval @updateSlideData, @data_update_interval
 
+        document.onkeydown = (event) =>
+            # console.log event.keyCode
+            switch event.keyCode
+                #
+                # 32, space -> toggle pause
+                when 32
+                    @togglePause()
+                    event.preventDefault()
+                #
+                # 37, left arrow -> prev
+                when 37
+                    $("#slideshow").superslides("prev")
+                    @togglePause() if playing
+                    event.preventDefault()
+                #
+                # 39, right arrow -> next
+                when 39
+                    $("#slideshow").superslides("next")
+                    @togglePause() if playing
+                    event.preventDefault()
+                #
+                # 73, i -> toggle info
+                when 73
+                    title_ui.toggle()
+                    event.preventDefault()
+                #
+                # 76, l -> load new slides
+                when 76
+                    # FIXME: to set playing=true is hackish, see togglePause
+                    playing = true
+                    @updateSlideData()
+                    event.preventDefault()
+
+
+    togglePause: =>
+        # FIXME: clear the nextUpdate interval
+        # when entering paused state.
+        if playing
+            console.log "Slideshow paused"
+            $("#slideshow").superslides("stop")
+            playing = false
+            $("#state").addClass("paused").text("||")
+        else
+            console.log "Slideshow playing"
+            $("#slideshow").superslides("play")
+            playing = true
+            $("#state").removeClass("paused").text("")
+
 
     # render slides using Transparency.js
     renderSlides: =>
@@ -107,13 +156,14 @@ class Iivari.Models.Slideshow
         $(".fullimg img").css
             width: "auto",
             height: "#{SCREEN_HEIGHT}px"
+        $(".slides-container").trigger("slides.animated")
 
 
     initSlideshow: =>
         # FIXME: use @slideData[slideNumber].slide_delay value
         $('#slideshow').superslides
             delay: 10000
-            play: true
+            play: playing
             slide_speed: 2500
             slide_easing: "swing"
             container_class: "slides-container"
@@ -143,7 +193,10 @@ class Iivari.Models.Slideshow
 
 
     updateSlideData: =>
+        # this return is a hack; see togglePause()
+        return unless playing
         notifier_ui.show "Haetaan uusia kuvia.."
+
         deferred = new $.Deferred()
         promise = deferred.promise()
         promise.done =>
