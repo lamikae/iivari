@@ -79,6 +79,7 @@ class Iivari.Models.Slideshow
             css:
                 top: 20
 
+
     start: ->
         $("body").css
             "background-image": "null",
@@ -133,16 +134,20 @@ class Iivari.Models.Slideshow
     togglePause: =>
         # FIXME: clear the nextUpdate interval
         # when entering paused state.
+        # FIXME: this behaves differently whether
+        # using slideDelay interval or animationframe
         if playing
             console.log "Slideshow paused"
-            clearTimeout nextSlideTimeout
+            # clearTimeout nextSlideTimeout
+            # nextSlideDelay = null
             playing = false
-            $("#state").addClass("paused").text("||")
+            $("#state").text("||").addClass("paused")
         else
             console.log "Slideshow playing"
             playing = true
-            nextSlideTimeout = @slideDelay()
-            $("#state").removeClass("paused").text("")
+            # nextSlideTimeout = @slideDelay()
+            @slideAnimateToNext (Date.now() - @current_dt), @current_delay
+            $("#state").text("").removeClass("paused")
 
 
     # render slides using Transparency.js
@@ -160,20 +165,55 @@ class Iivari.Models.Slideshow
 
 
     renderCurrent: =>
-        slide_nr = $('#slideshow').superslides("current")
-        # console.log "Slide nr #{slide_nr}"
-        @showTitle slide_nr
-        # TODO: unify these
-        $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
-        if nextSlideTimeout
-            clearTimeout nextSlideTimeout
-        if playing
-            # FIXME: use @slideData[slideNumber].slide_delay value
-            nextSlideTimeout = @slideDelay()
+        try
+            slide_nr = $('#slideshow').superslides("current")
+            # console.log "Slide nr #{slide_nr}"
+            # console.log @slideData[slide_nr]
 
+            # trust dom slide indexing
+            title_el = $(".title_container")[slide_nr]
+            text = $(title_el).text().trim()
+            # ..or use original?
+            # console.log @slideData[slide_nr].slide_html
+            title_ui.show text, false
+            #
+            # reset dial
+            @current_dt = 0
+            $("#next-slide-delay .dial")
+                .val(@current_dt)
+                .trigger("change")
+
+            # TODO: unify these
+            $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
+            # if nextSlideTimeout
+            #     clearTimeout nextSlideTimeout
+            delay = @slideData[slide_nr].slide_delay
+            if delay
+                # this delay is in seconds, convert to ms
+                @current_delay = delay * 1000
+                console.log "slide delay: #{@current_delay}"
+            else
+                # default, 10 sec
+                @current_delay = 10000
+
+            $("#next-slide-delay input").knob
+                readonly: true
+                skin: "tron"
+                fgColor: "#ac02a3"
+                thickness: ".2"
+                displayPrevious: true
+                width: 100
+                max: @current_delay
+
+            if playing
+                # nextSlideTimeout = @slideDelay()
+                $("#state").text("").removeClass("paused")
+                @slideAnimateToNext(Date.now(), @current_delay)
+        catch err
+            console.log "Failed to lookup slide from index #{slide_nr}"
+            console.log err
 
     initSlideshow: =>
-        # FIXME: use @slideData[slideNumber].slide_delay value
         $('#slideshow').superslides
             play: false
             container_class: "slides-container"
@@ -185,24 +225,34 @@ class Iivari.Models.Slideshow
             ).fadeIn(5000)
 
 
-    slideDelay: (delay) =>
-        return unless playing
-        delay ?= 10000
-        return setTimeout =>
+    # slideDelay: (delay) =>
+    #     return unless playing
+    #     delay ?= 10000
+    #     return setTimeout =>
+    #         $("#slideshow").superslides("next")
+    #     , delay
+
+
+    # Change one slide within animation frame
+    slideAnimateToNext: (t0, delay) =>
+        delay ?= 30000
+        t0 ?= Date.now()
+        t1 = Date.now()
+        @current_dt = t1 - t0
+        @current_delay = delay
+        if (@current_dt) < delay
+            # continue
+            $("#next-slide-delay .dial")
+                .val(@current_dt)
+                .trigger("change")
+            return unless playing
+            requestAnimationFrame => @slideAnimateToNext(t0, delay)
+        else
+            # timeout
+            $("#next-slide-delay .dial")
+                .val(delay)
+                .trigger("change")
             $("#slideshow").superslides("next")
-        , delay
-
-
-    showTitle: (slide_nr) =>
-        try
-            # trust dom slide indexing
-            title_el = $(".title_container")[slide_nr]
-            text = $(title_el).text().trim()
-            # ..or use original?
-            # console.log @slideData[slide_nr].slide_html
-            title_ui.show text, false
-        catch err
-            console.log "Failed to lookup slide from index #{slide_nr}"
 
 
     updateSlideData: =>

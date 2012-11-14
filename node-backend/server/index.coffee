@@ -75,10 +75,12 @@ app.configure ->
     css.addFile "#{rootDir}/vendor/stylesheets/jquery-ui.css"
     js.addFile "#{rootDir}/vendor/javascripts/jquery.js"
     js.addFile "#{rootDir}/vendor/javascripts/jquery-ui.js"
+    js.addFile "#{rootDir}/vendor/javascripts/jquery.knob.js"
     js.addFile "#{rootDir}/vendor/javascripts/underscore.js"
     js.addFile "#{rootDir}/vendor/javascripts/transparency.js"
     js.addFile "#{rootDir}/vendor/javascripts/moment.js"
     js.addFile "#{rootDir}/vendor/javascripts/moment-fi.js"
+    js.addFile "#{rootDir}/vendor/javascripts/RequestAnimationFrame.js"
 
     # app
     css.addFile "#{rootDir}/client/styles/main.styl"
