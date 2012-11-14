@@ -103,7 +103,7 @@ class exports.FileSystemSlides
         # img_path = image_file.replace @media_root, ""
         # image_src = "http://localhost:8000#{img_path}"
 
-        style = "cyan"
+        style = "default"
         html = """
         <div class="title_container #{style}">\
             <h1 class="title">#{title}</h1>\

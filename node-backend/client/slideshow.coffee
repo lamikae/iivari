@@ -59,6 +59,8 @@ class Iivari.Models.Slideshow
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
 
+    notifier_ui = null
+    title_ui = null
 
     constructor: (@json_url, @data_update_interval, @preview, @cache) ->
         @slideData = null
@@ -66,6 +68,15 @@ class Iivari.Models.Slideshow
         $(".slides-container").hide()
         $(".footer_container").hide()
 
+        notifier_ui = $("#notifications").uimessage
+            container_class: "notifications-container"
+            css:
+                bottom: 20
+
+        title_ui = $("#slide_title").uimessage
+            container_class: "title-container"
+            css:
+                top: 20
 
     start: ->
         $("body").css
@@ -76,9 +87,10 @@ class Iivari.Models.Slideshow
         promise = @updateSlideData()
         promise.done =>
             @initSlideshow()
-        promise.fail ->
+        promise.fail (err) =>
             console.log "failed to load slides, try again..."
             setTimeout @start, 5000
+
         # start slide poll
         if (not @preview) and @json_url and @data_update_interval
             setInterval @updateSlideData, @data_update_interval
@@ -92,21 +104,13 @@ class Iivari.Models.Slideshow
         $(".slides-container").render(
             @slideData,
             {slide: -> html: @slide_html})
-
-        # resize fullscreen image -  maybe make scaling optional?
-        title = $($(".title_container")[0]).height()
-        footer = $(".footer_container").height()
-        $(".fullimg img").css {width: "auto", height: "#{SCREEN_HEIGHT - footer - title}px"}
+        $(".fullimg img").css
+            width: "auto",
+            height: "#{SCREEN_HEIGHT}px"
 
 
     initSlideshow: =>
         # FIXME: use @slideData[slideNumber].slide_delay value
-        # FIXME: checkSlideTimerAndStatus
-
-        if @preview
-            $(".slides-container").show()
-            return
-
         $('#slideshow').superslides
             delay: 10000
             play: true
@@ -114,15 +118,40 @@ class Iivari.Models.Slideshow
             slide_easing: "swing"
             container_class: "slides-container"
 
-        $("#slideshow").trigger("slides.start")
-
         $("body").on "slides.initialized", "#slideshow", =>
             console.log 'Superslides initialized!'
-            $(".slides-container").fadeIn(5000)
+            $(".slides-container").
+                bind("slides.animated", (event, params) =>
+                    slide_nr = $('#slideshow').superslides("current")
+                    # console.log "Slide nr #{slide_nr}"
+                    @showTitle slide_nr
+                    $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
+                ).
+                fadeIn(5000)
+
+
+    showTitle: (slide_nr) =>
+        try
+            # trust dom slide indexing
+            title_el = $(".title_container")[slide_nr]
+            text = $(title_el).text().trim()
+            # ..or use original?
+            # console.log @slideData[slide_nr].slide_html
+            title_ui.show text, false
+        catch err
+            console.log "Failed to lookup slide from index #{slide_nr}"
 
 
     updateSlideData: =>
+        notifier_ui.show "Haetaan uusia kuvia.."
         deferred = new $.Deferred()
+        promise = deferred.promise()
+        promise.done =>
+            notifier_ui.clear()
+        promise.fail (err) =>
+            console.log err
+            notifier_ui.show "Taustaprosessiin ei saa yhteyttä", false
+
         if @cache
             # jquery-offline handles transport errors
             # NOTE: if offline (no network), and even if server is localhost, json data is not requested!
@@ -154,8 +183,7 @@ class Iivari.Models.Slideshow
                     deferred.resolve()
 
                 error: (jqXHR, textStatus, errorThrown) ->
-                    console.log "#{textStatus}: #{errorThrown}"
-                    deferred.reject()
+                    deferred.reject("#{textStatus}: #{errorThrown}")
 
-        return deferred.promise()
+        return promise
 

@@ -86,6 +86,7 @@ app.configure ->
     css.addFile "#{rootDir}/client/styles/client.css"
     js.addFile "#{rootDir}/client/slideshow.coffee"
     js.addFile "#{rootDir}/client/jquery.superslides.coffee"
+    js.addFile "#{rootDir}/client/uimessage.coffee"
 
 
 app.configure "development", ->
