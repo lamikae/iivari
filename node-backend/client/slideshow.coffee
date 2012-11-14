@@ -195,7 +195,7 @@ class Iivari.Models.Slideshow
     updateSlideData: =>
         # this return is a hack; see togglePause()
         return unless playing
-        notifier_ui.show "Haetaan uusia kuvia.."
+        notifier_ui.show "Arvotaan uusia kuvia.."
 
         deferred = new $.Deferred()
         promise = deferred.promise()
@@ -203,7 +203,7 @@ class Iivari.Models.Slideshow
             notifier_ui.clear()
         promise.fail (err) =>
             console.log err
-            notifier_ui.show "Taustaprosessiin ei saa yhteyttä", false
+            notifier_ui.show "Taustaprosessiin ei saada yhteyttä", false
 
         if @cache
             # jquery-offline handles transport errors
