@@ -150,6 +150,9 @@ append = ($el) ->
   $container.append($el)
   update()
 
+current = ->
+  return this.current
+
 animate = (direction) ->
   this.current = (if this.current >= 0 then this.current else null)
   unless animating || direction >= size || +direction == this.current
@@ -360,3 +363,5 @@ $.fn.superslides.api =
     animate('next')
   prev: ->
     animate('prev')
+  current: ->
+    current()
