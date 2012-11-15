@@ -159,6 +159,15 @@ class Iivari.Models.Slideshow
         $(".slides-container").trigger("slides.animated")
 
 
+    renderCurrent: =>
+        slide_nr = $('#slideshow').superslides("current")
+        # console.log "Slide nr #{slide_nr}"
+        @showTitle slide_nr
+        # TODO: unify these
+        $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
+        # FIXME: use @slideData[slideNumber].slide_delay value
+
+
     initSlideshow: =>
         # FIXME: use @slideData[slideNumber].slide_delay value
         $('#slideshow').superslides
@@ -172,10 +181,7 @@ class Iivari.Models.Slideshow
             console.log 'Superslides initialized!'
             $(".slides-container").
                 bind("slides.animated", (event, params) =>
-                    slide_nr = $('#slideshow').superslides("current")
-                    # console.log "Slide nr #{slide_nr}"
-                    @showTitle slide_nr
-                    $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
+                    @renderCurrent()
                 ).
                 fadeIn(5000)
 
