@@ -22,7 +22,7 @@
     }
     , "devDependencies": {
           "mocha": ""
-        , "expect.js": ""
+        , "should": ""
         , "supervisor": ""
         , "node-inspector": ""
     }
