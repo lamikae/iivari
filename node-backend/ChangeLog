@@ -1,3 +1,7 @@
+= 0.4.0
+Implement slide change control using timeouts.
+
+
 = 0.3.0
 New features:
   * fade in/out transition effect
