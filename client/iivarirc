@@ -4,7 +4,9 @@
 #
 {
 	# Server base URL
-	"SERVER_BASE" : "http://localhost:3000/conductor",
+	# -- localhost:8080/client : local iivari-backend
+	# -- remotehost:3000/conductor : remote rails server
+	"SERVER_BASE" : "http://localhost:8080/client",
 
 	# Logger level -- FATAL, WARN, INFO, DEBUG
 	"LOG_LEVEL"   : "INFO",
