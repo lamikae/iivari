@@ -11,9 +11,9 @@ from iivari import __version__
 
 setup(name="iivari-client",
       version=__version__,
-      maintainer="Juha Erkkilä",
-      maintainer_email="Juha.Erkkila@opinsys.fi",
-      url="https://github.com/opinsys/iivari/",
+      maintainer="Mikael Lammentausta",
+      maintainer_email="mikael.lammentausta+github@gmail.com",
+      url="https://github.com/lamikae/iivari/",
       license="GPL-2",
       description="Webbrowser for iivari info screens",
       long_description=read("README.md"),
