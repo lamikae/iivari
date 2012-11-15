@@ -1,3 +1,7 @@
+= 0.4.2
+Beautify.
+
+
 = 0.4.1
 Animate a jquery.knob timer indicating next slide change.
 This consumes quite a lot more cpu than the basic method in 0.4.0.

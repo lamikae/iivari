@@ -1,3 +1,10 @@
+iivari-backend (0.4.2-1) unstable; urgency=low
+
+  * beautify
+
+ -- lamikae <mikael.lammentausta+github+@gmail.com>  Thu, 15 Nov 2012 23:59:00 +0200
+
+
 iivari-backend (0.4.1-1) unstable; urgency=low
 
   * timer canvas
