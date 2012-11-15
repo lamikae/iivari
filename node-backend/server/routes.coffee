@@ -37,8 +37,7 @@ module.exports = (app, js, css, config) ->
     app.get "/slides", (req, res) ->
         console.log "GET /slides"
         try
+            slides.FileSystemSlides.config config.images
             res.json slides.FileSystemSlides.shuffle()
-            # TODO: check if index file exists and if not,
-            # write it after successful index.
         catch e
             console.log e

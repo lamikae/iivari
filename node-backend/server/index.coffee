@@ -33,10 +33,10 @@ defaults =
     sessionSecret: "Very secret string. (override me)"
 
 try
-    config = JSON.parse fs.readFileSync rootDir + "config.json"
+    config = JSON.parse fs.readFileSync rootDir + "/config.json"
 catch e
     config = {}
-    console.error "Could no load config.json. Using defaults."
+    console.error "Could not load config.json. Using defaults."
 
 for k, v of defaults
     config[k] ?= v

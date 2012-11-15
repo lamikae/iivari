@@ -24,9 +24,21 @@ _ = require "underscore"
 
 class exports.FileSystemSlides
 
-    @media_root = "/media/usb"
     @index_filename = "iivari.cache.db"
     @slides = null
+
+    # Configurable options
+    # @media_root can be served using file:// urls
+    # or http:// for serving the directory remotely.
+    @urlloc = ""
+    @media_root = "/media/usb"
+    @config = (options) =>
+        @urlloc = options.url
+        try
+            @media_root = @urlloc.match(/file:\/\/(.*)/)[1]
+            console.log "Files from local media root #{@media_root}"
+            # if the filesystem is remote, @media_root should mirror it
+
 
     # Finds images from filesystem at @media_root,
     # generates slides json of 20 random images for iivari-client.
@@ -96,12 +108,8 @@ class exports.FileSystemSlides
 
     # Slide fullscreen image template for client
     @slide_json = (image_file, title) ->
-        # serve local file
-        image_src = "file://#{image_file}"
-
-        # serve from http server
-        # img_path = image_file.replace @media_root, ""
-        # image_src = "http://localhost:8000#{img_path}"
+        img_path = image_file.replace @media_root, ""
+        image_src = "#{@urlloc}#{img_path}"
 
         style = "default"
         html = """

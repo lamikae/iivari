@@ -1,1 +1,5 @@
-{}
+{
+    "images" : {
+        "url" : "file:///media/usb"
+    }
+}
