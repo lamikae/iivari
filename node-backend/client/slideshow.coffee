@@ -135,13 +135,13 @@ class Iivari.Models.Slideshow
         # when entering paused state.
         if playing
             console.log "Slideshow paused"
-            $("#slideshow").superslides("stop")
+            clearTimeout nextSlideTimeout
             playing = false
             $("#state").addClass("paused").text("||")
         else
             console.log "Slideshow playing"
-            $("#slideshow").superslides("play")
             playing = true
+            nextSlideTimeout = @slideDelay()
             $("#state").removeClass("paused").text("")
 
 
@@ -165,25 +165,32 @@ class Iivari.Models.Slideshow
         @showTitle slide_nr
         # TODO: unify these
         $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
-        # FIXME: use @slideData[slideNumber].slide_delay value
+        if nextSlideTimeout
+            clearTimeout nextSlideTimeout
+        if playing
+            # FIXME: use @slideData[slideNumber].slide_delay value
+            nextSlideTimeout = @slideDelay()
 
 
     initSlideshow: =>
         # FIXME: use @slideData[slideNumber].slide_delay value
         $('#slideshow').superslides
-            delay: 10000
-            play: playing
-            slide_speed: 2500
-            slide_easing: "swing"
+            play: false
             container_class: "slides-container"
 
         $("body").on "slides.initialized", "#slideshow", =>
             console.log 'Superslides initialized!'
-            $(".slides-container").
-                bind("slides.animated", (event, params) =>
-                    @renderCurrent()
-                ).
-                fadeIn(5000)
+            $(".slides-container").bind(
+                "slides.animated", @renderCurrent
+            ).fadeIn(5000)
+
+
+    slideDelay: (delay) =>
+        return unless playing
+        delay ?= 10000
+        return setTimeout =>
+            $("#slideshow").superslides("next")
+        , delay
 
 
     showTitle: (slide_nr) =>
