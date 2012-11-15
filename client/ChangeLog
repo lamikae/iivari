@@ -1,5 +1,14 @@
+= 1.4.1
+Maintenance release
+
+ * make local file access configurable
+ * install /etc/iivarirc with the debian package
+ * change default server to localhost:8080/client
+ * adjust logging
+
+
 = 1.4.0
-Adding support for local slide server.
+Added support for local slide server.
 
  * Local content can access file urls
  * Wait for server before launching webkit
