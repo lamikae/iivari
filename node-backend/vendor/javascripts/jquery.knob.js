@@ -403,7 +403,8 @@
                     bgColor : this.$.data('bgcolor') || '#EEEEEE',
                     angleOffset : this.$.data('angleoffset') || 0,
                     angleArc : this.$.data('anglearc') || 360,
-                    inline : true
+                    inline : true,
+                    dialText : this.$.data('dialText') || null
                 }, this.o
             );
         };
@@ -412,7 +413,12 @@
             if (null != v) {
                 this.cv = this.o.stopper ? max(min(v, this.o.max), this.o.min) : v;
                 this.v = this.cv;
-                this.$.val(this.v);
+                if (this.o.dialText != null) {
+                    this.$.val(this.o.dialText);
+                }
+                else {
+                    this.$.val(this.v);
+                }
                 this._draw();
             } else {
                 return this.v;
