@@ -14,5 +14,8 @@
 
 	# Log file location, set to "None" for stdout.
 	# The default is ~/.iivari/log/iivari.log
-	"LOG_FILE"  : "/home/infotv/iivari.log"
+	"LOG_FILE"    : "/home/infotv/iivari.log",
+
+	# Allow remote content to access local files
+	"ALLOW_FILE_ACCESS" : "False"
 }

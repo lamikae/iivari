@@ -106,19 +106,18 @@ class MainWebView(QtWebKit.QWebView):
         # enable Javascript
         qsettings.setAttribute(QWebSettings.JavascriptEnabled, True)
 
-        """
-        Enable application to work in offline mode.
-        Use HTML5 cache manifest for static content,
-        and jquery.offline for dynamic JSON content.
-
-        @see http://diveintohtml5.info/offline.html
-        """
+        # Enable application to work in offline mode.
+        # Use HTML5 cache manifest for static content,
+        # and jquery.offline for dynamic JSON content.
         if cache_path is not None:
             qsettings.enablePersistentStorage(cache_path)
 
-        # allow http page from server access local file:// urls
-        QtWebKit.QWebSecurityOrigin.addLocalScheme("http")
-        qsettings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, True)
+        # If set, allow http page from server access local file:// urls
+        if settings.ALLOW_FILE_ACCESS is True:
+            QtWebKit.QWebSecurityOrigin.addLocalScheme("http")
+        qsettings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, settings.ALLOW_FILE_ACCESS)
+
+        # Enable local files to access content over the network
         qsettings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)
 
         #qsettings.setAttribute(

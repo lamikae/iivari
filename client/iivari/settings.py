@@ -71,3 +71,7 @@ if 'LOG_FILE' in rc_config:
 else:
     LOG_FILE = os.path.join(IIVARIDIR, 'log', 'iivari.log')
 
+if 'ALLOW_FILE_ACCESS' in rc_config:
+    ALLOW_FILE_ACCESS = (rc_config['ALLOW_FILE_ACCESS'] == "True")
+else:
+    ALLOW_FILE_ACCESS = False
