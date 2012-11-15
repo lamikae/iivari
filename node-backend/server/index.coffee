@@ -20,15 +20,13 @@ express = require "express"
 fs = require "fs"
 hbs = require "hbs"
 piler = require "piler"
-homeDir = "#{__dirname}/.."
 
+rootDir = "#{__dirname}/.."
 app = module.exports = express.createServer()
-
 css = piler.createCSSManager()
 js = piler.createJSManager()
 css.bind app
 js.bind app
-
 
 defaults =
     port: 8080
@@ -50,7 +48,7 @@ if process.env.NODE_ENV == "production"
 
 app.configure ->
     # use handlebars template engine
-    app.set "views", "#{homeDir}/app/views"
+    app.set "views", "#{rootDir}/client/views"
     app.set "view engine", "hbs"
 
     app.use express.bodyParser()
@@ -74,20 +72,20 @@ app.configure ->
             source = fs.readFileSync rootDir + "/views/client/#{ name }.hbs"
 
     # vendor assets
-    css.addFile "#{homeDir}/vendor/stylesheets/jquery-ui.css"
-    js.addFile "#{homeDir}/vendor/javascripts/jquery.js"
-    js.addFile "#{homeDir}/vendor/javascripts/jquery-ui.js"
-    js.addFile "#{homeDir}/vendor/javascripts/underscore.js"
-    js.addFile "#{homeDir}/vendor/javascripts/transparency.js"
-    js.addFile "#{homeDir}/vendor/javascripts/moment.js"
-    js.addFile "#{homeDir}/vendor/javascripts/moment-fi.js"
+    css.addFile "#{rootDir}/vendor/stylesheets/jquery-ui.css"
+    js.addFile "#{rootDir}/vendor/javascripts/jquery.js"
+    js.addFile "#{rootDir}/vendor/javascripts/jquery-ui.js"
+    js.addFile "#{rootDir}/vendor/javascripts/underscore.js"
+    js.addFile "#{rootDir}/vendor/javascripts/transparency.js"
+    js.addFile "#{rootDir}/vendor/javascripts/moment.js"
+    js.addFile "#{rootDir}/vendor/javascripts/moment-fi.js"
 
     # app
-    css.addFile "#{homeDir}/app/styles/main.styl"
-    css.addFile "#{homeDir}/app/styles/reset.styl"
-    css.addFile "#{homeDir}/app/styles/client.css"
-    js.addFile "#{homeDir}/app/client.js.coffee"
-    js.addFile "#{homeDir}/app/jquery.superslides.coffee"
+    css.addFile "#{rootDir}/client/styles/main.styl"
+    css.addFile "#{rootDir}/client/styles/reset.styl"
+    css.addFile "#{rootDir}/client/styles/client.css"
+    js.addFile "#{rootDir}/client/slideshow.coffee"
+    js.addFile "#{rootDir}/client/jquery.superslides.coffee"
 
 
 app.configure "development", ->
@@ -98,7 +96,7 @@ app.configure "production", ->
     app.use express.errorHandler()
 
 # Add routes and real application logic
-require("#{homeDir}/app/routes.js") app, js, css, config
+require("./routes") app, js, css, config
 
 # start the server
 port = process.env.PORT || 8080

@@ -1,12 +1,12 @@
 NAME=iivari-backend
 
 INSTALLFILES ?= \
-	app/*.coffee \
-	app/styles/* \
-	app/views/* \
+	server/*.coffee \
+	client/*.coffee \
+	client/styles/* \
+	client/views/* \
 	vendor/javascripts/* \
 	vendor/stylesheets/* \
-	site/* \
 	package.json \
 	site.js \
 	log/.keep
@@ -30,7 +30,7 @@ clean:
 deb:
 	-rm -rf debian/$(NAME) deb_dist
 	mkdir -p deb_dist/$(NAME)
-	cp -r app bin debian init site log Makefile package.json README.md site.js vendor deb_dist/$(NAME) && \
+	cp -r bin client debian init server log Makefile package.json README.md site.js vendor deb_dist/$(NAME) && \
 	cd deb_dist/$(NAME) && \
 	dpkg-buildpackage -rfakeroot -uc -us || exit 1;
 

@@ -68,6 +68,10 @@ class Iivari.Models.Slideshow
 
 
     start: ->
+        $("body").css
+            "background-image": "null",
+            "background": "black",
+
         # start superslides after receiving the first slide batch
         promise = @updateSlideData()
         promise.done =>
@@ -82,22 +86,12 @@ class Iivari.Models.Slideshow
 
     # render slides using Transparency.js
     renderSlides: =>
-        if @preview
-            console.log 'Preview mode'
-            $("#slideshow").html(@slideData[0].slide_html)
-        else
-            console.log "reset slide container"
-            # hack not needed
-            $(".slides-container").html()
-                # """
-                # <li>
-                #   <div class="slide"></div>
-                # </li>
-                # """)
-
-            $(".slides-container").render(
-                @slideData,
-                {slide: -> html: @slide_html})
+        # clear current slide abruptly
+        $(".slides-container").html()
+        # render new slideset
+        $(".slides-container").render(
+            @slideData,
+            {slide: -> html: @slide_html})
 
         # resize fullscreen image -  maybe make scaling optional?
         title = $($(".title_container")[0]).height()

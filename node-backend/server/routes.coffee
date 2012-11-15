@@ -17,8 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 ###
 
 http = require "http"
-homeDir = "#{__dirname}/.."
-slides = require "#{homeDir}/app/slides.js"
+slides = require "./slides"
 
 module.exports = (app, js, css, config) ->
 
@@ -30,7 +29,7 @@ module.exports = (app, js, css, config) ->
     app.get "/client", (req, res) ->
         console.log "GET /client"
         try
-            res.render 'client', { theme: "cyan" }
+            res.render 'slideshow', { theme: "cyan" }
         catch e
             console.log e
 
@@ -38,6 +37,8 @@ module.exports = (app, js, css, config) ->
     app.get "/slides", (req, res) ->
         console.log "GET /slides"
         try
-            res.json slides.FileSystemSlides.find()
+            res.json slides.FileSystemSlides.shuffle()
+            # TODO: check if index file exists and if not,
+            # write it after successful index.
         catch e
             console.log e

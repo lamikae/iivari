@@ -1,5 +1,9 @@
 body {
-  background: white;
+  background: #aaa;
+  /*background-image: url(http://localhost:8000/bg.gif);*/
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-image: url(file:///media/usb/bg.gif);
 }
 html, body, .footer{
     margin: 0;
