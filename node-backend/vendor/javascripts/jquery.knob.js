@@ -579,6 +579,7 @@
                         ,'border' : 0
                         ,'background' : 'none'
                         ,'font' : 'bold ' + ((this.o.width / s) >> 0) + 'px Arial'
+                        ,'font-size' : "1.8em"
                         ,'text-align' : 'center'
                         ,'color' : this.o.fgColor
                         ,'padding' : '0px'
