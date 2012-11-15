@@ -123,9 +123,12 @@ class MainWebView(QtWebKit.QWebView):
         #qsettings.setAttribute(
         #    QtWebKit.QWebSettings.DeveloperExtrasEnabled, True)
 
+        url = self.options.get('url')
+
         # write qsettings to log
-        logger.debug("\n * ".join([
-            ' --- QWebSettings ---',
+        logger.info("\n * ".join([
+            ' * URL: %s' % url,
+            '',
             'OfflineWebApplicationCache: %s' % (
                 qsettings.testAttribute(
                     QWebSettings.OfflineWebApplicationCacheEnabled)),
@@ -146,7 +149,6 @@ class MainWebView(QtWebKit.QWebView):
             ]))
 
         # wait for server
-        url = self.options.get('url')
         ping = False
         while(ping is False):
             try:
@@ -156,7 +158,6 @@ class MainWebView(QtWebKit.QWebView):
                 sleep(3)
 
         # launch the request
-        logger.info("url: %s" % url)
         self.setUrl(QtCore.QUrl(url))
 
 
@@ -219,6 +220,11 @@ class MainWebPage(QtWebKit.QWebPage):
         match = re.search('Error|Exception',message)
         if match:
             logger.error(msg_tmpl % message)
+            return
+
+        match = re.search('Not allowed',message)
+        if match:
+            logger.warn(msg_tmpl % message)
             return
 
         logger.debug(msg_tmpl % message)

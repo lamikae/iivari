@@ -62,15 +62,15 @@ class ColoredFormatter(logging.Formatter):
         return logging.Formatter.format(self, record)
 
 class ConcurrentRotatingColoredLogger(logging.Logger):
-    
+
     LOG_COLORS = False
 
-    DEBUG_FORMAT = "%(levelname)s  %(asctime)s $BOLD%(filename)s$RESET:%(lineno)d %(message)s"
+    DEBUG_FORMAT = "%(levelname)s  %(asctime)s $BOLD%(filename)s$RESET:%(lineno)d\n%(message)s"
     DEBUG_FORMAT = formatter_message(DEBUG_FORMAT, LOG_COLORS)
 
-    INFO_FORMAT = "%(levelname)-0s  %(asctime)s $BOLD%(name)-0s$RESET:%(lineno)d %(message)s"
+    INFO_FORMAT = "%(levelname)-0s  %(asctime)s $BOLD%(name)-0s$RESET:%(lineno)d\n%(message)s"
     INFO_FORMAT = formatter_message(INFO_FORMAT, LOG_COLORS)
-    
+
     sizelimit = 512*1024 # set default filesize limit to 512 kB
 
     level = logging.INFO
