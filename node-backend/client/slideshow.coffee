@@ -62,6 +62,7 @@ class Iivari.Models.Slideshow
     notifier_ui = null
     title_ui = null
     playing = true
+    nextSlideDeferred = null
 
     constructor: (@json_url, @data_update_interval, @preview, @cache) ->
         @slideData = null
@@ -72,12 +73,12 @@ class Iivari.Models.Slideshow
         notifier_ui = $("#notifications").uimessage
             container_class: "notifications-container"
             css:
-                bottom: 20
+                bottom: 0
 
         title_ui = $("#slide_title").uimessage
             container_class: "title-container"
             css:
-                top: 20
+                top: 0
 
 
     start: ->
@@ -139,19 +140,23 @@ class Iivari.Models.Slideshow
         if playing
             console.log "Slideshow paused"
             # clearTimeout nextSlideTimeout
-            # nextSlideDelay = null
+            if nextSlideDeferred
+                nextSlideDeferred.reject()
             playing = false
             $("#state").text("||").addClass("paused")
         else
             console.log "Slideshow playing"
             playing = true
             # nextSlideTimeout = @slideDelay()
-            @slideAnimateToNext (Date.now() - @current_dt), @current_delay
+            nextSlideDeferred = @slideAnimateToNext (Date.now() - @current_dt), @current_delay
             $("#state").text("").removeClass("paused")
 
 
     # render slides using Transparency.js
     renderSlides: =>
+        # stop any other active slide animation deffereds
+        if nextSlideDeferred
+            nextSlideDeferred.reject()
         # clear current slide abruptly
         $(".slides-container").html()
         # render new slideset
@@ -172,46 +177,56 @@ class Iivari.Models.Slideshow
 
             # trust dom slide indexing
             title_el = $(".title_container")[slide_nr]
-            text = $(title_el).text().trim()
+            title_text = $(title_el).text().trim()
             # ..or use original?
             # console.log @slideData[slide_nr].slide_html
-            title_ui.show text, false
-            #
-            # reset dial
+            title_ui.show title_text, false
+
+            # if nextSlideTimeout
+            #     clearTimeout nextSlideTimeout
+            if nextSlideDeferred
+                nextSlideDeferred.reject()
+
+            delay = @slideData[slide_nr].slide_delay
+            if delay
+                # this delay is in seconds, convert to ms
+                @current_delay = delay * 1000
+                # console.log "slide delay: #{@current_delay}"
+            else
+                # default, 10 sec
+                @current_delay = 10000
+
+            # set dial
+            knob = '<input type="text" value="0" class="dial">'
+            wrapper = $("#next-slide-delay")
+            $(wrapper)
+                .html("")
+                .append(knob)
+            $("#next-slide-delay .dial").knob
+                readonly: true
+                skin: "tron"
+                fgColor: "#efefef"
+                bgColor: "#222222"
+                thickness: ".2"
+                displayPrevious: true
+                width: 180
+                max: @current_delay
+                dialText: "#{slide_nr+1} / #{_.size @slideData}"
+                val: 0
             @current_dt = 0
             $("#next-slide-delay .dial")
                 .val(@current_dt)
                 .trigger("change")
 
-            # TODO: unify these
-            $("#progress").text "#{slide_nr+1} / #{_.size @slideData}"
-            # if nextSlideTimeout
-            #     clearTimeout nextSlideTimeout
-            delay = @slideData[slide_nr].slide_delay
-            if delay
-                # this delay is in seconds, convert to ms
-                @current_delay = delay * 1000
-                console.log "slide delay: #{@current_delay}"
-            else
-                # default, 10 sec
-                @current_delay = 10000
-
-            $("#next-slide-delay input").knob
-                readonly: true
-                skin: "tron"
-                fgColor: "#ac02a3"
-                thickness: ".2"
-                displayPrevious: true
-                width: 100
-                max: @current_delay
-
             if playing
                 # nextSlideTimeout = @slideDelay()
+                nextSlideDeferred = @slideAnimateToNext(Date.now(), @current_delay)
                 $("#state").text("").removeClass("paused")
-                @slideAnimateToNext(Date.now(), @current_delay)
+
         catch err
             console.log "Failed to lookup slide from index #{slide_nr}"
             console.log err
+
 
     initSlideshow: =>
         $('#slideshow').superslides
@@ -233,8 +248,12 @@ class Iivari.Models.Slideshow
     #     , delay
 
 
-    # Change one slide within animation frame
-    slideAnimateToNext: (t0, delay) =>
+    # Change slide within animation frame, the delay is shown on jQuery.Knob dial.
+    slideAnimateToNext: (t0, delay, deferred) =>
+        # Deferred acts as "clearTimeout" to this RequestAnimationFrame
+        # when its state is either resolved or rejected.
+        deferred ?= new $.Deferred()
+        return deferred if deferred.state() != "pending"
         delay ?= 30000
         t0 ?= Date.now()
         t1 = Date.now()
@@ -245,14 +264,18 @@ class Iivari.Models.Slideshow
             $("#next-slide-delay .dial")
                 .val(@current_dt)
                 .trigger("change")
-            return unless playing
-            requestAnimationFrame => @slideAnimateToNext(t0, delay)
+            unless playing
+                deferred.reject()
+                return deferred
+            requestAnimationFrame => @slideAnimateToNext(t0, delay, deferred)
         else
             # timeout
             $("#next-slide-delay .dial")
                 .val(delay)
                 .trigger("change")
             $("#slideshow").superslides("next")
+            deferred.resolve()
+        return deferred
 
 
     updateSlideData: =>
