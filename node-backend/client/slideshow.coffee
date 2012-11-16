@@ -38,7 +38,7 @@ class Iivari.Views.Conductor
 
     start: ->
         json_url = "/slides"
-        data_update_interval = 15*10000 # slide interval = 15
+        data_update_interval = 20 * 15000 # slides count * slide interval
         preview = false
         ctrl_url = null
         ctrl_update_interval = null
