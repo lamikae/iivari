@@ -7,17 +7,18 @@ INSTALLFILES ?= \
 	client/views/* \
 	vendor/javascripts/* \
 	vendor/stylesheets/* \
-	config.json \
 	package.json \
 	site.js \
 	log/.keep
+
+INSTALLDIR=/opt/iivari/node-backend
 
 all:
 
 install:
 	for file in $(INSTALLFILES); do \
 		install -D -o infotv -g infotv -m 644 $$file \
-			$(DESTDIR)/opt/iivari/node-backend/$$file || exit 1; \
+			$(DESTDIR)$(INSTALLDIR)/$$file || exit 1; \
 	done
 
 	install -D -o root -g root -m 755 bin/production \
@@ -26,12 +27,16 @@ install:
 	install -D -o root -g root -m 755 init/$(NAME) \
 		$(DESTDIR)/etc/init.d/$(NAME)
 
+	# config.json.example -> config.json
+	install -D -o root -g root -m 755 config.json.example \
+		$(DESTDIR)$(INSTALLDIR)/config.json
+
 clean:
 
 deb:
 	-rm -rf debian/$(NAME) deb_dist
 	mkdir -p deb_dist/$(NAME)
-	cp -r bin client debian init server log Makefile config.json package.json README.md site.js vendor deb_dist/$(NAME) && \
+	cp -r bin client debian init server log Makefile config.json.example package.json README.md site.js vendor deb_dist/$(NAME) && \
 	cd deb_dist/$(NAME) && \
 	dpkg-buildpackage -rfakeroot -uc -us || exit 1;
 
