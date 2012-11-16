@@ -50,6 +50,13 @@ class UIMessage
       @container.fadeIn()
       visible = true
 
+  hide: =>
+    @container.fadeOut("fast")
+    visible = false
+  unhide: =>
+    @container.fadeIn("fast")
+    visible = true
+
 
 # Plugin
 $.fn.uimessage = (options) ->

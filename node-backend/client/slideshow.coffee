@@ -60,6 +60,7 @@ class Iivari.Models.Slideshow
     SCREEN_HEIGHT = window.innerHeight
 
     playing = true
+    fullscreen = false
 
     # animate is an option to use request animation frame
     # instead of interval-based motionless slide change
@@ -149,13 +150,14 @@ R -- arvo uudet kuvat<br>
                 # 70, f -> toggle fullscreen
                 when 70
                     event.preventDefault()
-                    try
-                        @title_ui.toggle()
+                    @toggleFullscreen()
+
                 #
                 # 72, h -> toggle help
                 when 72
-                    @help_ui.toggle()
                     event.preventDefault()
+                    try
+                        @help_ui.toggle()
                 #
                 # 82, r -> load new slides
                 when 82
@@ -163,6 +165,25 @@ R -- arvo uudet kuvat<br>
                     playing = true
                     @updateSlideData()
                     event.preventDefault()
+
+
+    toggleFullscreen: =>
+        if fullscreen
+            # exit fullscreen, show elements
+            fullscreen = false
+            $("#next-slide-delay").fadeIn("fast")
+            $("#state").fadeIn("fast")
+            try
+                @title_ui.unhide()
+                @notifier_ui.unhide()
+        else
+            # enter fullscreen, hide elements
+            fullscreen = true
+            $("#next-slide-delay").fadeOut("fast")
+            $("#state").fadeOut("fast")
+            try
+                @title_ui.hide()
+                @notifier_ui.hide()
 
 
     togglePause: =>
@@ -269,6 +290,10 @@ R -- arvo uudet kuvat<br>
                     @nextSlideTimeout = @slideDelay()
                 $("#state").text("").removeClass("paused")
 
+            if fullscreen
+                # hide previous image timeout warning
+                $("#next-slide-delay").fadeOut()
+
         catch err
             console.log "Failed to lookup slide from index #{slide_nr}"
             console.log err
@@ -314,6 +339,10 @@ R -- arvo uudet kuvat<br>
             unless playing
                 deferred.reject()
                 return deferred
+            # in fullscreen mode, alert if time is running out
+            if fullscreen and (delay - @current_dt < 5000)
+                $("#next-slide-delay").fadeIn()
+            # animate
             requestAnimationFrame => @slideDelayAnimate(t0, delay, deferred)
         else
             # timeout
