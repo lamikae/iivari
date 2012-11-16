@@ -80,6 +80,25 @@ class Iivari.Models.Slideshow
             css:
                 top: 0
 
+        @help_ui = $("#help").uimessage
+            container_class: "help"
+            visible: false
+            css:
+                top: "100px"
+                width: "95%"
+                "min-height": "420px"
+            html: "
+<div id='version'>#{document.title}</div>
+<article>
+&nbsp; -- välilyönti keskeyttää kuvaesityksen<br>
+&#x2194; -- nuolinäppäimillä voi selata edelliseen ja seuraavaan<br>
+<br>
+H -- tämä teksti<br>
+F -- piilota käyttöliittymä<br>
+R -- arvo uudet kuvat<br>
+</article>
+            "
+
 
     start: ->
         $("body").css
@@ -132,6 +151,11 @@ class Iivari.Models.Slideshow
                     event.preventDefault()
                     try
                         @title_ui.toggle()
+                #
+                # 72, h -> toggle help
+                when 72
+                    @help_ui.toggle()
+                    event.preventDefault()
                 #
                 # 82, r -> load new slides
                 when 82
