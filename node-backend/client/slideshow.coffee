@@ -302,12 +302,14 @@ class Iivari.Models.Slideshow
 
 
     updateSlideData: =>
-        return unless playing
-        try
-            @notifier_ui.show "Arvotaan uusia kuvia.."
-
         deferred = new $.Deferred()
         promise = deferred.promise()
+        # refuse to fetch new slides in pause mode
+        unless playing
+            deferred.reject()
+            return promise
+        try
+            @notifier_ui.show "Arvotaan uusia kuvia.."
         promise.done =>
             try
                 @notifier_ui.clear()
