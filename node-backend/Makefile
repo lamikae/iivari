@@ -13,6 +13,8 @@ INSTALLFILES ?= \
 
 INSTALLDIR=/opt/iivari/node-backend
 
+INCLUDE_NODE_MODULES=true
+
 all:
 
 install:
@@ -30,6 +32,15 @@ install:
 	# config.json.example -> config.json
 	install -D -o root -g root -m 755 config.json.example \
 		$(DESTDIR)$(INSTALLDIR)/config.json
+
+	if [ $(INCLUDE_NODE_MODULES) ]; then \
+#  ***\
+#  *** Downloading dependencies from node.js repositories        ***\
+#  *** If this fails, please check that you have 'npm' in $$PATH ***\
+#  ***\
+		npm install --production && \
+		mv node_modules $(DESTDIR)$(INSTALLDIR)/ ;\
+	fi
 
 clean:
 
