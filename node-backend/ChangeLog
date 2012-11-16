@@ -1,3 +1,15 @@
+= 0.7.0
+Refactoring and polish.
+
+ * Add help screen, key "H" (case irrelevant)
+ * Change keycodes: use f for fullscreen and r to load new slides
+ * Hide all ui elements in fullscreen mode.
+ * Do not intercept Ctrl^ commands
+ * Slideset update should not change playing state
+ * Increase update call interval
+ * Insert version into document title
+
+
 = 0.6.0
 Install node dependencies to debian package.
 None of the dependencies have compilation targets so the

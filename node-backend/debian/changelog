@@ -1,3 +1,10 @@
+iivari-backend (0.7.0-1) unstable; urgency=low
+
+  * add help screen and change default action keys
+
+ -- lamikae <mikael.lammentausta+github+@gmail.com>  Fri, 16 Nov 2012 22:01:00 +0200
+
+
 iivari-backend (0.6.0-1) unstable; urgency=low
 
   * package node dependencies into the debian package
