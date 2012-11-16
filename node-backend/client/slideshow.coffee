@@ -62,7 +62,10 @@ class Iivari.Models.Slideshow
     notifier_ui = null
     title_ui = null
     playing = true
-    nextSlideDeferred = null
+
+    # animate is an option to use request animation frame
+    # instead of interval-based motionless slide change
+    animate = true
 
     constructor: (@json_url, @data_update_interval, @preview, @cache) ->
         @slideData = null
@@ -133,30 +136,33 @@ class Iivari.Models.Slideshow
 
 
     togglePause: =>
-        # FIXME: clear the nextUpdate interval
-        # when entering paused state.
-        # FIXME: this behaves differently whether
-        # using slideDelay interval or animationframe
         if playing
-            console.log "Slideshow paused"
-            # clearTimeout nextSlideTimeout
-            if nextSlideDeferred
-                nextSlideDeferred.reject()
             playing = false
+            @abortNextSlide()
             $("#state").text("||").addClass("paused")
+            console.log "Slideshow paused"
         else
-            console.log "Slideshow playing"
             playing = true
-            # nextSlideTimeout = @slideDelay()
-            nextSlideDeferred = @slideAnimateToNext (Date.now() - @current_dt), @current_delay
+            # use request animation frame or timeout?
+            if animate
+                @nextSlideDeferred = @slideDelayAnimate (Date.now() - @current_dt), @current_delay
+            else
+                @nextSlideTimeout = @slideDelay()
             $("#state").text("").removeClass("paused")
+            console.log "Slideshow playing"
+
+
+    abortNextSlide: =>
+        if @nextSlideTimeout
+            clearTimeout @nextSlideTimeout
+        if @nextSlideDeferred
+            @nextSlideDeferred.reject()
 
 
     # render slides using Transparency.js
     renderSlides: =>
         # stop any other active slide animation deffereds
-        if nextSlideDeferred
-            nextSlideDeferred.reject()
+        @abortNextSlide()
         # clear current slide abruptly
         $(".slides-container").html()
         # render new slideset
@@ -182,10 +188,7 @@ class Iivari.Models.Slideshow
             # console.log @slideData[slide_nr].slide_html
             title_ui.show title_text, false
 
-            # if nextSlideTimeout
-            #     clearTimeout nextSlideTimeout
-            if nextSlideDeferred
-                nextSlideDeferred.reject()
+            @abortNextSlide()
 
             delay = @slideData[slide_nr].slide_delay
             if delay
@@ -196,31 +199,44 @@ class Iivari.Models.Slideshow
                 # default, 10 sec
                 @current_delay = 10000
 
-            # set dial
-            knob = '<input type="text" value="0" class="dial">'
-            wrapper = $("#next-slide-delay")
-            $(wrapper)
-                .html("")
-                .append(knob)
-            $("#next-slide-delay .dial").knob
-                readonly: true
-                skin: "tron"
-                fgColor: "#efefef"
-                bgColor: "#222222"
-                thickness: ".2"
-                displayPrevious: true
-                width: 180
-                max: @current_delay
-                dialText: "#{slide_nr+1} / #{_.size @slideData}"
-                val: 0
-            @current_dt = 0
-            $("#next-slide-delay .dial")
-                .val(@current_dt)
-                .trigger("change")
+            progress_text = "#{slide_nr+1} / #{_.size @slideData}"
+            if animate
+                wrapper = $("#next-slide-delay")
+                knob = '<input type="text" value="0" class="dial">'
+                $(wrapper)
+                    .html("")
+                    .append(knob)
+                $("#next-slide-delay .dial").knob
+                    readonly: true
+                    skin: "tron"
+                    fgColor: "#efefef"
+                    bgColor: "#222222"
+                    thickness: ".2"
+                    displayPrevious: true
+                    width: 180
+                    max: @current_delay
+                    dialText: progress_text
+                    val: 0
+                @current_dt = 0
+                $("#next-slide-delay .dial")
+                    .val(@current_dt)
+                    .trigger("change")
+            else
+                wrapper = $("#next-slide-delay")
+                wrapper
+                    .text(progress_text)
+                    .css
+                        "font-size": "3em"
+
+                $("#state").css
+                    bottom: "2em"
 
             if playing
-                # nextSlideTimeout = @slideDelay()
-                nextSlideDeferred = @slideAnimateToNext(Date.now(), @current_delay)
+                # use request animation frame or timeout?
+                if animate
+                    @nextSlideDeferred = @slideDelayAnimate(Date.now(), @current_delay)
+                else
+                    @nextSlideTimeout = @slideDelay()
                 $("#state").text("").removeClass("paused")
 
         catch err
@@ -240,16 +256,17 @@ class Iivari.Models.Slideshow
             ).fadeIn(5000)
 
 
-    # slideDelay: (delay) =>
-    #     return unless playing
-    #     delay ?= 10000
-    #     return setTimeout =>
-    #         $("#slideshow").superslides("next")
-    #     , delay
+    # Change slide after a timeout.
+    slideDelay: (delay) =>
+        return unless playing
+        delay ?= 10000
+        return setTimeout =>
+            $("#slideshow").superslides("next")
+        , delay
 
 
     # Change slide within animation frame, the delay is shown on jQuery.Knob dial.
-    slideAnimateToNext: (t0, delay, deferred) =>
+    slideDelayAnimate: (t0, delay, deferred) =>
         # Deferred acts as "clearTimeout" to this RequestAnimationFrame
         # when its state is either resolved or rejected.
         deferred ?= new $.Deferred()
@@ -267,7 +284,7 @@ class Iivari.Models.Slideshow
             unless playing
                 deferred.reject()
                 return deferred
-            requestAnimationFrame => @slideAnimateToNext(t0, delay, deferred)
+            requestAnimationFrame => @slideDelayAnimate(t0, delay, deferred)
         else
             # timeout
             $("#next-slide-delay .dial")
