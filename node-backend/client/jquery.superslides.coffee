@@ -341,7 +341,7 @@ $.fn.superslides.options =
   slide_speed: 'normal'
   slide_easing: 'linear'
   nav_class: 'slides-navigation'
-  container_class: 'slides-container'
+  container_class: 'slides'
   pagination: false
   hashchange: false
   scrollable: true

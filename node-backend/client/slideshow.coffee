@@ -70,16 +70,15 @@ class Iivari.Models.Slideshow
     constructor: (@json_url, @data_update_interval, @preview, @cache) ->
         @slideData = null
         # hide slide container
-        $(".slides-container").hide()
-        $(".footer_container").hide()
+        $(".slides").hide()
 
         notifier_ui = $("#notifications").uimessage
-            container_class: "notifications-container"
+            container_class: "notifications"
             css:
                 bottom: 0
 
         title_ui = $("#slide_title").uimessage
-            container_class: "title-container"
+            container_class: "title"
             css:
                 top: 0
 
@@ -172,15 +171,15 @@ class Iivari.Models.Slideshow
         # stop any other active slide animation deffereds
         @abortNextSlide()
         # clear current slide abruptly
-        $(".slides-container").html()
+        $(".slides").html()
         # render new slideset
-        $(".slides-container").render(
+        $(".slides").render(
             @slideData,
             {slide: -> html: @slide_html})
         $(".fullimg img").css
             width: "auto",
             height: "#{SCREEN_HEIGHT}px"
-        $(".slides-container").trigger("slides.animated")
+        $(".slides").trigger("slides.animated")
 
 
     renderCurrent: =>
@@ -255,11 +254,11 @@ class Iivari.Models.Slideshow
     initSlideshow: =>
         $('#slideshow').superslides
             play: false
-            container_class: "slides-container"
+            container_class: "slides"
 
         $("body").on "slides.initialized", "#slideshow", =>
             console.log 'Superslides initialized!'
-            $(".slides-container").bind(
+            $(".slides").bind(
                 "slides.animated", @renderCurrent
             ).fadeIn(5000)
 
