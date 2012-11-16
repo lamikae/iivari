@@ -59,8 +59,6 @@ class Iivari.Models.Slideshow
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
 
-    notifier_ui = null
-    title_ui = null
     playing = true
 
     # animate is an option to use request animation frame
@@ -72,12 +70,12 @@ class Iivari.Models.Slideshow
         # hide slide container
         $(".slides").hide()
 
-        notifier_ui = $("#notifications").uimessage
+        @notifier_ui = $("#notifications").uimessage
             container_class: "notifications"
             css:
                 bottom: 0
 
-        title_ui = $("#slide_title").uimessage
+        @title_ui = $("#slide_title").uimessage
             container_class: "title"
             css:
                 top: 0
@@ -131,8 +129,9 @@ class Iivari.Models.Slideshow
                 #
                 # 70, f -> toggle fullscreen
                 when 70
-                    title_ui.toggle()
                     event.preventDefault()
+                    try
+                        @title_ui.toggle()
                 #
                 # 82, r -> load new slides
                 when 82
@@ -187,13 +186,13 @@ class Iivari.Models.Slideshow
             slide_nr = $('#slideshow').superslides("current")
             # console.log "Slide nr #{slide_nr}"
             # console.log @slideData[slide_nr]
-
-            # trust dom slide indexing
-            title_el = $(".title_container")[slide_nr]
-            title_text = $(title_el).text().trim()
-            # ..or use original?
-            # console.log @slideData[slide_nr].slide_html
-            title_ui.show title_text, false
+            try
+                # trust dom slide indexing
+                title_el = $(".title_container")[slide_nr]
+                title_text = $(title_el).text().trim()
+                # ..or use original?
+                # console.log @slideData[slide_nr].slide_html
+                @title_ui.show title_text, false
 
             @abortNextSlide()
 
@@ -303,17 +302,19 @@ class Iivari.Models.Slideshow
 
 
     updateSlideData: =>
-        # this return is a hack; see togglePause()
         return unless playing
-        notifier_ui.show "Arvotaan uusia kuvia.."
+        try
+            @notifier_ui.show "Arvotaan uusia kuvia.."
 
         deferred = new $.Deferred()
         promise = deferred.promise()
         promise.done =>
-            notifier_ui.clear()
+            try
+                @notifier_ui.clear()
         promise.fail (err) =>
             console.log err
-            notifier_ui.show "Taustaprosessiin ei saada yhteyttä", false
+            try
+                @notifier_ui.show "Taustaprosessiin ei saada yhteyttä", false
 
         if @cache
             # jquery-offline handles transport errors
