@@ -161,9 +161,7 @@ R -- arvo uudet kuvat<br>
                 #
                 # 82, r -> load new slides
                 when 82
-                    # FIXME: to set playing=true is hackish, see togglePause
-                    playing = true
-                    @updateSlideData()
+                    @updateSlideData(true)
                     event.preventDefault()
 
 
@@ -354,11 +352,12 @@ R -- arvo uudet kuvat<br>
         return deferred
 
 
-    updateSlideData: =>
+    updateSlideData: (force) =>
         deferred = new $.Deferred()
         promise = deferred.promise()
+        force ?= false
         # refuse to fetch new slides in pause mode
-        unless playing
+        unless playing or force
             deferred.reject()
             return promise
         try
