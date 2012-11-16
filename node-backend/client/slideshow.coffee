@@ -309,14 +309,14 @@ class Iivari.Models.Slideshow
                 deferred.resolve()
 
         else
-            console.log "request slides from #{@json_url}"
+            console.log "GET #{@json_url}"
             $.ajax
                 url: @json_url,
                 dataType: 'json',
                 cache: false,
                 timeout: 300000,
                 success: (data, textStatus, jqXHR) =>
-                    console.log("received #{data.length} slides")
+                    console.log("Info: received #{data.length} images from #{@json_url}")
                     @slideData = data
                     @renderSlides()
                     deferred.resolve()
