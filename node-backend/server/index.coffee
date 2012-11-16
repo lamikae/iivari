@@ -83,9 +83,8 @@ app.configure ->
     js.addFile "#{rootDir}/vendor/javascripts/RequestAnimationFrame.js"
 
     # app
-    css.addFile "#{rootDir}/client/styles/main.styl"
     css.addFile "#{rootDir}/client/styles/reset.styl"
-    css.addFile "#{rootDir}/client/styles/client.css"
+    css.addFile "#{rootDir}/client/styles/main.styl"
     js.addFile "#{rootDir}/client/slideshow.coffee"
     js.addFile "#{rootDir}/client/jquery.superslides.coffee"
     js.addFile "#{rootDir}/client/uimessage.coffee"

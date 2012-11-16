@@ -1,7 +1,32 @@
 @import 'nib'
+@import 'nib/gradients'
+
+*
+    box-sizing border-box
 
 body
-    background #aaeebb
+    background: #aaa;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-image: url("file:///media/usb/bg.gif");
+
+html, body
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+
+#slideshow
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+.fullimg
+    text-align: center;
+.fullimg img
+    margin: 0 auto;
+    max-width: none;
+    -ms-interpolation-mode: bicubic;
+    -webkit-backface-visibility: hidden;
 
 #notifications
     background #000000
@@ -57,3 +82,40 @@ body
     right 1em
     padding 0.7em
     z-index 99999
+
+
+#notifications.gold, #slide_title.gold
+    color: #0a0704
+    opacity: 0.8
+    background: linear-gradient(
+        top,
+        #f1b500,
+        20% #e9ad02,
+        40% #e3a001,
+        60% #d99300,
+        80% #d38a00,
+        100% #ca8500)
+
+#notifications.cyan, #slide_title.cyan
+    opacity: 0.8
+    color: #eae7e4
+    background: linear-gradient(
+        top,
+        #00bfb4,
+        20% #00b1a7,
+        40% #00a69c,
+        60% #009f96,
+        80% #00938a,
+        100% #008a82)
+
+#notifications.green, #slide_title.green
+    color: #224272
+    background: linear-gradient(
+        right,
+        #d4f835,
+        20% #c9f600,
+        40% #c3ed00,
+        60% #b8e000,
+        80% #afd400,
+        100% #ebece5)
+
