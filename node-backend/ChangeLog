@@ -1,3 +1,9 @@
+= 0.6.0
+Install node dependencies to debian package.
+None of the dependencies have compilation targets so the
+package will be architecture-independent.
+
+
 = 0.5.0
 Major release.
 
