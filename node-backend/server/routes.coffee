@@ -29,7 +29,7 @@ module.exports = (app, js, css, config) ->
     app.get "/client", (req, res) ->
         console.log "GET /client"
         try
-            res.render 'slideshow', { theme: "cyan" }
+            res.render 'slideshow', { theme: "cyan", title: "Iivari" }
         catch e
             console.log e
 
