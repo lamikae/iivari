@@ -19,8 +19,13 @@ class UIMessage
     if options.css
       @css options.css
 
+    visible = options.visible
+    visible ?= true
     unless visible
       @container.hide()
+
+    if options.html
+      @container.html(options.html)
 
   css: (params) =>
     @container.css params
