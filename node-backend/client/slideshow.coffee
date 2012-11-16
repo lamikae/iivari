@@ -101,9 +101,17 @@ class Iivari.Models.Slideshow
         if (not @preview) and @json_url and @data_update_interval
             setInterval @updateSlideData, @data_update_interval
 
+
         document.onkeydown = (event) =>
-            # console.log event.keyCode
-            switch event.keyCode
+            # do not intercept Ctrl^ commands
+            ctrlDown = event.ctrlKey || event.metaKey # Mac support
+            if ctrlDown
+                # execute default
+                return
+
+            c = event.keyCode
+            # console.log c
+            switch c
                 #
                 # 32, space -> toggle pause
                 when 32
