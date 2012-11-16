@@ -5,25 +5,20 @@
         "test": "node_modules/.bin/mocha"
         , "start": "node site.js"
     }
-    , "main": "./lib/index"
+    , "main": "./site"
     , "dependencies": {
-        "coffee-script": ""
-        , "underscore": ""
-        , "async": ""
-        , "stylus": ""
+        "coffee-script": "1.4"
+        , "underscore": "1.4"
+        , "stylus": "0.30"
         , "nib": ""
         , "express": "2.5.11"
-        , "piler": ""
+        , "piler": "0.4"
         , "handlebars": ""
         , "hbs": ""
-        , "socket.io": ""
-        , "zlib": ""
         , "node-glob": "git://github.com/isaacs/node-glob.git"
     }
     , "devDependencies": {
-          "mocha": ""
+          "mocha": "1.7"
         , "should": ""
-        , "supervisor": ""
-        , "node-inspector": ""
     }
 }
