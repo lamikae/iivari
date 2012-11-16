@@ -1,3 +1,13 @@
+= 0.5.0
+Major release.
+
+ * Remove unused node dependencies and lock current package versions
+ * Translate fullscreen image styles from client.css into stylus format
+ * Move config.json to config.json.example.
+ * Make theme configurable
+ * Add option "animate" to switch between animation frame and interval slide change methods
+
+
 = 0.4.2
 Beautify.
 
