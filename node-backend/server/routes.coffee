@@ -29,7 +29,11 @@ module.exports = (app, js, css, config) ->
     app.get "/client", (req, res) ->
         console.log "GET /client"
         try
-            res.render 'slideshow', { theme: "cyan", title: "Iivari" }
+            theme = config.images.theme
+        catch e
+            theme = "default"
+        try
+            res.render 'slideshow', { theme: theme, title: "Iivari" }
         catch e
             console.log e
 

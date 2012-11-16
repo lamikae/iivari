@@ -110,10 +110,8 @@ class exports.FileSystemSlides
     @slide_json = (image_file, title) ->
         img_path = image_file.replace @media_root, ""
         image_src = "#{@urlloc}#{img_path}"
-
-        style = "default"
         html = """
-        <div class="title_container #{style}">\
+        <div class="title_container">\
             <h1 class="title">#{title}</h1>\
         </div>\
         <div class="content">\

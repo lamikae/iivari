@@ -1,5 +1,6 @@
 {
     "images" : {
-        "url" : "file:///media/usb"
+        "url"   : "file:///media/usb",
+        "theme" : "default"
     }
 }
