@@ -130,13 +130,13 @@ class Iivari.Models.Slideshow
                     @togglePause() if playing
                     event.preventDefault()
                 #
-                # 73, i -> toggle info
-                when 73
+                # 70, f -> toggle fullscreen
+                when 70
                     title_ui.toggle()
                     event.preventDefault()
                 #
-                # 76, l -> load new slides
-                when 76
+                # 82, r -> load new slides
+                when 82
                     # FIXME: to set playing=true is hackish, see togglePause
                     playing = true
                     @updateSlideData()
