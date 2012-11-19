@@ -17,20 +17,19 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ###
 
+jQuery ->
+    Iivari.init();
+
 window.Iivari = {
     Models: {},
     Collections: {},
     Routers: {},
     Views: {},
     init: () ->
-        (new Iivari.Views.Conductor()).start();
+        (new Iivari.Routers.Conductor()).start();
 }
 
-$(document).ready ->
-    Iivari.init();
-
-
-class Iivari.Views.Conductor
+class Iivari.Routers.Conductor
 
     window.display = null     # backend proxy object for signaling
     Iivari.displayCtrl = null # display logic
@@ -46,15 +45,16 @@ class Iivari.Views.Conductor
         preview = false
         locale = "fi"
 
-        Iivari.slideshow = new Iivari.Models.Slideshow(json_url, data_update_interval, preview, cache)
+        Iivari.slideshow = new Iivari.Views.Slideshow(json_url, data_update_interval, preview, cache)
         Iivari.slideshow.start()
 
-        if (not @preview) and @json_url
-            # DisplayCtrl runs control timers and handles kiosk backend signaling.
-            Iivari.displayCtrl = new Iivari.Models.DisplayCtrl(ctrl_url, ctrl_update_interval, locale)
+        # TODO: fix offline cache
+        # if (not @preview) and @json_url
+        #     # DisplayCtrl runs control timers and handles kiosk backend signaling.
+        #     Iivari.displayCtrl = new Iivari.Models.DisplayCtrl(ctrl_url, ctrl_update_interval, locale)
 
 
-class Iivari.Models.Slideshow
+class Iivari.Views.Slideshow
 
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
