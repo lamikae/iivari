@@ -1,3 +1,7 @@
+= 0.8.0
+Renamed node-backend to iivari-express.
+
+
 = 0.7.0
 Refactoring and polish.
 

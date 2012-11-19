@@ -1,3 +1,10 @@
+iivari-express (0.8.0-1) unstable; urgency=low
+
+  * rename package
+
+ -- lamikae <mikael.lammentausta+github+@gmail.com>  Mon, 19 Nov 2012 17:08:00 +0200
+
+
 iivari-backend (0.7.0-1) unstable; urgency=low
 
   * add help screen and change default action keys

@@ -1,6 +1,6 @@
 {
-    "name" : "iivari-backend"
-    , "version": "0.7.0"
+    "name" : "iivari-express"
+    , "version": "0.8.0"
     , "scripts": {
         "test": "node_modules/.bin/mocha"
         , "start": "node site.js"
