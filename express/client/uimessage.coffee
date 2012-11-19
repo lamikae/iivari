@@ -18,9 +18,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 class UIMessage
 
-  container = null
-  visible = true
-
   constructor: (options) ->
     @container = $(".#{options.container_class}")
     unless @container
@@ -34,9 +31,9 @@ class UIMessage
     if options.css
       @css options.css
 
-    visible = options.visible
-    visible ?= true
-    unless visible
+    @visible = options.visible
+    @visible ?= true
+    unless @visible
       @container.hide()
 
     if options.html
@@ -48,7 +45,7 @@ class UIMessage
 
   show: (text, delay) =>
     @container.text(text)
-    return unless visible
+    return unless @visible
     # console.log "#{@container.selector} - #{text}"
     @container.fadeIn("fast")
     if delay
@@ -58,19 +55,19 @@ class UIMessage
     @container.fadeOut("slow", => @container.text(""))
 
   toggle: =>
-    if visible
+    if @visible
       @container.fadeOut()
-      visible = false
+      @visible = false
     else
       @container.fadeIn()
-      visible = true
+      @visible = true
 
   hide: =>
     @container.fadeOut("fast")
-    visible = false
+    @visible = false
   unhide: =>
     @container.fadeIn("fast")
-    visible = true
+    @visible = true
 
 
 # Plugin
