@@ -33,7 +33,11 @@ class exports.FileSystemSlides
     @urlloc = ""
     @media_root = "/media/usb"
     @config = (options) =>
+        options ?= {}
         @urlloc = options.url
+        unless @urlloc
+            console.log "Warning: config file does not define url"
+            return
         try
             @media_root = @urlloc.match(/file:\/\/(.*)/)[1]
             console.log "Files from local media root #{@media_root}"
