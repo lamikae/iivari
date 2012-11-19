@@ -29,7 +29,7 @@ module.exports = (app, js, css, config) ->
     app.get "/client", (req, res) ->
         console.log "GET /client"
         try
-            theme = config.images.theme
+            theme = config.slideshow.theme
         catch e
             theme = "default"
         try
@@ -42,7 +42,7 @@ module.exports = (app, js, css, config) ->
     app.get "/slides", (req, res) ->
         console.log "GET /slides"
         try
-            slides.FileSystemSlides.config config.images
+            slides.FileSystemSlides.config config.slideshow
             res.json slides.FileSystemSlides.shuffle()
         catch e
             console.log e

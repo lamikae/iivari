@@ -34,18 +34,17 @@ defaults =
 try
     conf_file = "/etc/iivari-express.conf"
     config = JSON.parse fs.readFileSync conf_file
-    # console.log "Debug: using #{conf_file}: read #{config}"
 catch e
     config = {}
     console.error "Could not load #{conf_file}."
 try
     for k, v of JSON.parse(fs.readFileSync rootDir + "/config.json")
-        console.log v
         config[k] ?= v
-catch e
-    console.error "Could not load config.json. Using defaults."
+# catch e
+    # console.error "Could not load config.json."
 for k, v of defaults
     config[k] ?= v
+console.log "Info: slideshow url: #{config.slideshow.url}, theme: #{config.slideshow.theme}"
 
 if process.env.NODE_ENV == "production"
     app.settings.env == "production"

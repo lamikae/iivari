@@ -1,5 +1,5 @@
 {
-    "images" : {
+    "slideshow" : {
         "url"   : "file:///media/usb",
         "theme" : "default"
     }
