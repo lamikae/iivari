@@ -18,74 +18,74 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 class UIMessage
 
-  constructor: (options) ->
-    @container = $(".#{options.container_class}")
-    unless @container
-      console.log "No container_class"
-      return false
+    constructor: (options) ->
+        @container = $(".#{options.container_class}")
+        unless @container
+            console.log "No container_class"
+            return false
 
-    @container.css
-      width: "auto"
-      height: "auto"
+        @container.css
+            width: "auto"
+            height: "auto"
 
-    if options.css
-      @css options.css
+        if options.css
+            @css options.css
 
-    @visible = options.visible
-    @visible ?= true
-    unless @visible
-      @container.hide()
+        @visible = options.visible
+        @visible ?= true
+        unless @visible
+            @container.hide()
 
-    if options.html
-      @container.html(options.html)
+        if options.html
+            @container.html(options.html)
 
-  css: (params) =>
-    @container.css params
-    return this
+    css: (params) =>
+        @container.css params
+        return this
 
-  show: (text, delay) =>
-    @container.text(text)
-    return unless @visible
-    # console.log "#{@container.selector} - #{text}"
-    @container.fadeIn("fast")
-    if delay
-      setTimeout @clear, delay
+    show: (text, delay) =>
+        @container.text(text)
+        return unless @visible
+        # console.log "#{@container.selector} - #{text}"
+        @container.fadeIn("fast")
+        if delay
+            setTimeout @clear, delay
 
-  clear: =>
-    @container.fadeOut("slow", => @container.text(""))
+    clear: =>
+        @container.fadeOut("slow", => @container.text(""))
 
-  toggle: =>
-    if @visible
-      @container.fadeOut()
-      @visible = false
-    else
-      @container.fadeIn()
-      @visible = true
+    toggle: =>
+        if @visible
+            @container.fadeOut()
+            @visible = false
+        else
+            @container.fadeIn()
+            @visible = true
 
-  hide: =>
-    @container.fadeOut("fast")
-    @visible = false
-  unhide: =>
-    @container.fadeIn("fast")
-    @visible = true
+    hide: =>
+        @container.fadeOut("fast")
+        @visible = false
+    unhide: =>
+        @container.fadeIn("fast")
+        @visible = true
 
 
 # Plugin
 $.fn.uimessage = (options) ->
-  if typeof options == "string"
-    api = $.fn.uimessage.api
-    method = options
+    if typeof options == "string"
+        api = $.fn.uimessage.api
+        method = options
 
-    # Convert arguments to real array
-    args = Array.prototype.slice.call(arguments)
-    args.splice(0, 1)
+        # Convert arguments to real array
+        args = Array.prototype.slice.call(arguments)
+        args.splice(0, 1)
 
-    api[method].apply(this, args)
-  else
-    # Defaults
-    options = $.fn.uimessage.options = $.extend $.fn.uimessage.options, options
+        api[method].apply(this, args)
+    else
+        # Defaults
+        options = $.fn.uimessage.options = $.extend $.fn.uimessage.options, options
 
-    return new UIMessage(options)
+        return new UIMessage(options)
 
 
 # Options
