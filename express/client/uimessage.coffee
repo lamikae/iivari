@@ -49,7 +49,7 @@ class UIMessage
   show: (text, delay) =>
     @container.text(text)
     return unless visible
-    console.log "#{@container.selector} - #{text}"
+    # console.log "#{@container.selector} - #{text}"
     @container.fadeIn("fast")
     if delay
       setTimeout @clear, delay

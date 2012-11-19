@@ -303,7 +303,7 @@ R -- arvo uudet kuvat<br>
             container_class: "slides"
 
         $("body").on "slides.initialized", "#slideshow", =>
-            console.log 'Superslides initialized!'
+            console.log 'Slideshow initialized!'
             $(".slides").bind(
                 "slides.animated", @renderCurrent
             ).fadeIn(5000)
