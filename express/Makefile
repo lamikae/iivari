@@ -32,6 +32,9 @@ install:
 	# config.json.example -> config.json
 	install -D -o root -g root -m 755 config.json.example \
 		$(DESTDIR)$(INSTALLDIR)/config.json
+	# also to /etc/iivari-express.conf
+	install -D -o root -g root -m 755 config.json.example \
+		$(DESTDIR)/etc/iivari-express.conf
 
 	if [ $(INCLUDE_NODE_MODULES) ]; then \
 #  ***\
