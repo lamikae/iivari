@@ -58,8 +58,8 @@ html, body
     opacity 0.7
     position absolute
     bottom 250px
-    right 1.9em
-    padding 0.2em 0.2em 0.4em 0.3em
+    right 1.5em
+    padding 0.2em 0.4em 0.4em 0.3em
     z-index 99999
     display none
 
@@ -70,40 +70,44 @@ html, body
     font-family 'Arial'
     letter-spacing 0.1em
     display block
+    text-shadow: .1em .1em .3em white
 
 #next-slide-delay
-    background transparent
     color white
     opacity 0.7
     position absolute
     bottom 0
+    overflow visible
     right 1em
-    padding 0.7em
+    padding 2em .1em 0
     z-index 99999
 
 #help
     position absolute
+    left 1em
     border 1px solid blue
     background #0e2e4e
     color #eee2ee
-    opacity 0.7
+    opacity 0.8
     font-family times
     font-size: 3em
-    left: 1em
     padding .2em
     z-index 999999
     text-align center
 #help article
     font-family monospace
-    font-size .7em
+    font-size .8em
     background #20484a
     border 1px solid purple
     margin 1em
     padding 1em
     text-align left
+    line-height 1.4em
+#help sub
+    font-size smaller
 
 
-#notifications.gold, #slide_title.gold
+#notifications.gold, #slide_title.gold, #help.gold article
     color: #0a0704
     opacity: 0.8
     background: linear-gradient(
@@ -114,8 +118,13 @@ html, body
         60% #d99300,
         80% #d38a00,
         100% #ca8500)
+#help.gold
+    background #0e2e4e
+    color #eee2ee
+    border 0
 
-#notifications.cyan, #slide_title.cyan
+
+#notifications.cyan, #slide_title.cyan, #help.cyan article
     opacity: 0.8
     color: #eae7e4
     background: linear-gradient(
@@ -126,8 +135,15 @@ html, body
         60% #009f96,
         80% #00938a,
         100% #008a82)
+#help.cyan
+    background #0e2e4e
+    color #eee2ee
+    border 0
+#help.cyan article
+    color: #111
 
-#notifications.green, #slide_title.green
+
+#notifications.green, #slide_title.green, #help.green
     color: #224272
     background: linear-gradient(
         right,
@@ -137,4 +153,9 @@ html, body
         60% #b8e000,
         80% #afd400,
         100% #ebece5)
-
+#help.green
+    border 0
+    opacity 0.8
+#help.green article
+    background transparent
+    border 0

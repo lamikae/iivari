@@ -86,16 +86,17 @@ class Iivari.Models.Slideshow
             visible: false
             css:
                 top: "100px"
-                width: "95%"
+                width: "92%"
                 "min-height": "420px"
             html: "
 <div id='version'>#{document.title}</div>
 <article>
-&nbsp; -- välilyönti keskeyttää kuvaesityksen<br>
-&#x2194; -- nuolinäppäimillä voi selata edelliseen ja seuraavaan<br>
+&nbsp; -- välilyönti pysäyttää kuvaesityksen<br>
+&#x2194; -- nuolinäppäimillä voi selata edelliseen ja seuraavaan kuvaan<br>
 <br>
-H -- tämä teksti<br>
-F -- piilota käyttöliittymä<br>
+H -- näytä tämä ohje<br>
+F -- piilota otsikko ja näytä vain kuva<br>
+     <sub>ajastin tulee esiin 3 sekuntia ennen kuvan vaihtumista</sub><br>
 R -- arvo uudet kuvat<br>
 </article>
             "
@@ -338,7 +339,8 @@ R -- arvo uudet kuvat<br>
                 deferred.reject()
                 return deferred
             # in fullscreen mode, alert if time is running out
-            if fullscreen and (delay - @current_dt < 5000)
+            alert_dt = 3000
+            if fullscreen and ((delay - @current_dt) < alert_dt)
                 $("#next-slide-delay").fadeIn()
             # animate
             requestAnimationFrame => @slideDelayAnimate(t0, delay, deferred)
