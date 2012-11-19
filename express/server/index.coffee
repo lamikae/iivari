@@ -104,5 +104,5 @@ require("./routes") app, js, css, config
 port = process.env.PORT || 8080
 app.listen port, ->
     console.log(
-        "Express server listening on port %d in %s mode",
+        "Iivari-Express listening on port %d in %s mode",
         app.address().port, app.settings.env)

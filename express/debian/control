@@ -1,12 +1,12 @@
-Source: iivari-backend
+Source: iivari-express
 Maintainer: lamikae <mikael.lammentausta+github+@gmail.com>
 Section: misc
 Priority: optional
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.8.4
 
-Package: iivari-backend
+Package: iivari-express
 Architecture: all
 Depends: ${misc:Depends}, nodejs, npm
-Description: Iivari node.js backend for local files
+Description: Simple image randomizer for iivari-client
  .

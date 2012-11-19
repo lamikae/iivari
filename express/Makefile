@@ -1,4 +1,4 @@
-NAME=iivari-backend
+NAME=iivari-express
 
 INSTALLFILES ?= \
 	server/*.coffee \
@@ -11,7 +11,7 @@ INSTALLFILES ?= \
 	site.js \
 	log/.keep
 
-INSTALLDIR=/opt/iivari/node-backend
+INSTALLDIR=/opt/iivari-express
 
 INCLUDE_NODE_MODULES=true
 
@@ -24,7 +24,7 @@ install:
 	done
 
 	install -D -o root -g root -m 755 bin/production \
-		$(DESTDIR)/usr/bin/iivari-backend
+		$(DESTDIR)/usr/bin/$(NAME)
 
 	install -D -o root -g root -m 755 init/$(NAME) \
 		$(DESTDIR)/etc/init.d/$(NAME)
