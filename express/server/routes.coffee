@@ -34,7 +34,7 @@ module.exports = (app, js, css, config) ->
             theme = "default"
         try
             # FIXME: access package.json version
-            res.render 'slideshow', { theme: theme, title: "Iivari-express v0.8.0" }
+            res.render 'slideshow', { theme: theme, title: "Iivari-express v0.8.1" }
         catch e
             console.log e
 
