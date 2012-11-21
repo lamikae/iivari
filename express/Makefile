@@ -19,7 +19,7 @@ all:
 
 install:
 	for file in $(INSTALLFILES); do \
-		install -D -o infotv -g infotv -m 644 $$file \
+		install -D -o root -g root -m 644 $$file \
 			$(DESTDIR)$(INSTALLDIR)/$$file || exit 1; \
 	done
 
