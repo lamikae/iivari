@@ -36,7 +36,7 @@ install:
 	install -D -o root -g root -m 755 config.json.example \
 		$(DESTDIR)/etc/iivari-express.conf
 
-	if [ $(INCLUDE_NODE_MODULES) ]; then \
+	if [ $(INCLUDE_NODE_MODULES) = true ]; then \
 #  ***\
 #  *** Downloading dependencies from node.js repositories        ***\
 #  *** If this fails, please check that you have 'npm' in $$PATH ***\
