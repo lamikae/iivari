@@ -25,6 +25,11 @@ install:
 	install -D -o root -g root -m 755 bin/production \
 		$(DESTDIR)/usr/bin/$(NAME)
 
+	# /usr/bin/iivari-slideshow client script
+	install -D -o root -g root -m 755 bin/iivari-slideshow \
+		$(DESTDIR)/usr/bin/iivari-slideshow
+
+	# /etc/init.d/iivari-express
 	install -D -o root -g root -m 755 init/$(NAME) \
 		$(DESTDIR)/etc/init.d/$(NAME)
 
@@ -34,6 +39,11 @@ install:
 	# also to /etc/iivari-express.conf
 	install -D -o root -g root -m 755 config.json.example \
 		$(DESTDIR)/etc/iivari-express.conf
+
+	# /usr/bin/iivari-slideshow will use
+	# --rcfile /var/lib/iivari-express/iivarirc
+	install -D -o root -g root -m 755 etc/iivarirc \
+		$(DESTDIR)$(INSTALLDIR)/iivarirc
 
 	if [ $(INCLUDE_NODE_MODULES) = true ]; then \
 #  ***\
@@ -49,7 +59,7 @@ clean:
 deb:
 	-rm -rf debian/$(NAME) deb_dist
 	mkdir -p deb_dist/$(NAME)
-	cp -r bin client debian init server Makefile config.json.example package.json README.md site.js vendor deb_dist/$(NAME) && \
+	cp -r bin client debian init server Makefile *.example etc package.json README.md site.js vendor deb_dist/$(NAME) && \
 	cd deb_dist/$(NAME) && \
 	dpkg-buildpackage -rfakeroot -uc -us || exit 1;
 

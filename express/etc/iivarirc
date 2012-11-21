@@ -1,0 +1,15 @@
+#
+# Iivari client settings for Iivari-Express.
+# Place this file to either ~/.iivarirc or /etc/iivarirc.
+#
+{
+	# iivari-express url
+	"SERVER_BASE" : "http://localhost:8080/client",
+
+	# Log file location, set to "None" for stdout.
+	# The default is ~/.iivari/log/iivari.log
+	"LOG_FILE"    : "/opt/iivari/client.log",
+
+	# Allow remote content to access local files
+	"ALLOW_FILE_ACCESS" : "True"
+}
