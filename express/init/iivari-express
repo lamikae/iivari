@@ -24,7 +24,11 @@ then
 fi
 
 # Gracefully exit if the package or its dependencies have been removed (but not purged).
-[ -x ${INSTALLDIR} ] || exit 0
+if [ ! -x ${INSTALLDIR} ]
+then
+  echo "${INSTALLDIR} not found"
+  exit 1
+fi
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
