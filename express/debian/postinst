@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e
+HOMEDIR=/opt/iivari
+
+# creating iivari group if he isn't already there
+if ! getent group iivari >/dev/null; then
+    addgroup --system iivari
+fi
+
+# creating iivari user if he isn't already there
+if ! getent passwd iivari >/dev/null; then
+    adduser --system --ingroup iivari --home ${HOMEDIR} iivari
+    usermod -c "Iivari" iivari
+fi
+usermod -d "${HOMEDIR}"  iivari
+usermod -g "iivari"      iivari
+usermod -s "/bin/false"  iivari
+
+if [ -d ${HOMEDIR} ]; then
+  chown iivari:iivari ${HOMEDIR}
+  chmod 0750 ${HOMEDIR}
+fi
+
+update-rc.d iivari-express defaults || exit $?
+invoke-rc.d iivari-express start    || exit $?
+
+#DEBHELPER#
+exit 0

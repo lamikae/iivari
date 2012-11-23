@@ -1,0 +1,6 @@
+#!/bin/sh
+invoke-rc.d iivari-express stop >/dev/null
+update-rc.d -f iivari-express remove || exit $?
+
+#DEBHELPER#
+exit 0
