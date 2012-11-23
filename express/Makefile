@@ -8,8 +8,7 @@ INSTALLFILES ?= \
 	vendor/javascripts/* \
 	vendor/stylesheets/* \
 	package.json \
-	site.js \
-	log/.keep
+	site.js
 
 INSTALLDIR=/opt/iivari-express
 
