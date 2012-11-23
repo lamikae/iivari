@@ -26,6 +26,5 @@ setup(name="iivari-client",
                "bin/iivari-display_test_pattern"],
       data_files=[("/usr/share/iivari/assets", glob.glob("iivari/assets/*")),
                   ("/usr/share/applications", ["iivari-infotv.desktop"]),
-                  ("/etc", ["iivarirc"]),
                   ],
       )
