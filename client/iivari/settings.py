@@ -3,6 +3,7 @@
 # Iivari settings
 #
 import os, json, re, logging
+import __builtin__
 
 # base log and cache default root to repository main directory
 IIVARIDIR = os.path.join(os.environ['HOME'], '.iivari')
@@ -23,8 +24,12 @@ AUTHKEY_FILE = os.path.join(IIVARIDIR, 'auth')
 # /etc/iivarirc is global and individual settings may be overridden
 # from ~/.iivarirc
 global_rc = "/etc/iivarirc"
-user_rc = os.path.join(os.environ['HOME'], ".iivarirc")
+try:
+    user_rc = __builtin__.IIVARIRC
+except:
+    user_rc = os.path.join(os.environ['HOME'], ".iivarirc")
 rc_config = {}
+
 def read_config(rc_file):
     # use a little bit of regexp to allow comments in json data
     s = open(rc_file, "r").read()
@@ -34,11 +39,11 @@ def read_config(rc_file):
 try:
     if os.path.exists(global_rc):
         rc_config = read_config(global_rc)
-        print "INFO: using /etc/iivarirc"
+        print "INFO: using %s" % global_rc
     # override from user config
     if os.path.exists(user_rc):
         rc_config.update(read_config(user_rc))
-        print "INFO: using ~/.iivarirc"
+        print "INFO: using %s" % user_rc
 except Exception, e:
     # print and ignore errors, use defaults
     print e

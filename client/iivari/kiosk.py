@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Copyright © 2011 Opinsys Oy
+            2012 lamikae
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -16,6 +17,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
+import os
 import re
 import sys
 import signal
@@ -23,20 +25,56 @@ import urlparse
 from optparse import OptionParser
 from logging import getLogger
 import PySide
+from PySide import QtGui
+import __builtin__
 import iivari
 
 def process_args():
     parser = OptionParser()
     parser.add_option(
-        "-n", "--hostname", action="store", dest="hostname",help="client hostname for the server (overrides autodetect)")
+        "-n", "--hostname", action="store", dest="hostname",
+        help="client hostname for the server (overrides autodetect)")
     parser.add_option(
-        "-s", "--size", action="store", dest="size",help="client screen resolution (overrides autodetect)")
+        "-s", "--size", action="store", dest="size",
+        help="client screen resolution (overrides autodetect)")
     parser.add_option(
-        "-r", "--repl", action="store_true", dest="use_repl",help="launch JavaScript REPL for debugging")
-    parser.add_option("-u", "--urlbase", action="store", dest="urlbase",
-                      help="base for url to fetch screen contents")
+        "-r", "--repl", action="store_true", dest="use_repl",
+        help="launch JavaScript REPL for debugging")
+    parser.add_option(
+        "-u", "--urlbase", action="store", dest="urlbase",
+        help="base for url to fetch screen contents")
+    parser.add_option(
+        "-c", "--rcfile", action="store", dest="rcfile",
+        help="custom iivarirc")
 
     return parser.parse_args()
+
+
+def prepare_log_and_cache_paths():
+
+    import iivari.settings as settings
+
+    if 'LOG_FILE' in settings.__dict__:
+        # setup log directory
+        log_file = settings.LOG_FILE
+        if log_file is not None:
+            log_dir = os.path.dirname(log_file)
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+        __builtin__.LOG_FILE = log_file
+    else:
+        # when LOG_FILE is undefined, log to console
+        __builtin__.LOG_FILE = None
+
+    if 'CACHE_PATH' in settings.__dict__:
+        # setup cache directory for offline resources
+        cache_path = settings.CACHE_PATH
+        if cache_path is not None:
+            if not os.path.exists(cache_path):
+                os.makedirs(cache_path)
+        __builtin__.IIVARI_CACHE_PATH = cache_path
+    else:
+        __builtin__.IIVARI_CACHE_PATH = None
 
 
 if __name__ == "__main__":
@@ -55,15 +93,8 @@ if __name__ == "__main__":
     # parse command line parameters
     (opts, args) = process_args()
 
-    # Prints PySide and the Qt version used to compile PySide
-    logger.info(' *\n * Initialising iivari-client %s\n * Python %s\n * PySide version %s\n * Qt version %s\n *' % (
-        iivari.__version__,
-        re.split(" ", sys.version)[0],
-        PySide.__version__,
-        PySide.QtCore.__version__))
-
-    # initialize Qt application and MainWindow
-    app = PySide.QtGui.QApplication(sys.argv)
+    # initialize Qt application
+    app = PySide.QtGui.QApplication("")
 
     # process parameters
     # --hostname
@@ -83,6 +114,17 @@ if __name__ == "__main__":
         size = app.desktop().availableGeometry().size()
         width = size.width()
         height = size.height()
+    if opts.rcfile is not None:
+        __builtin__.IIVARIRC = opts.rcfile
+
+    # Prints PySide and the Qt version used to compile PySide
+    logger.info(' *\n * Initialising iivari-client %s\n * Python %s\n * PySide version %s\n * Qt version %s\n *' % (
+        iivari.__version__,
+        re.split(" ", sys.version)[0],
+        PySide.__version__,
+        PySide.QtCore.__version__))
+
+    prepare_log_and_cache_paths()
 
     # format start url
     base = urlparse.urlsplit(opts.urlbase or iivari.settings.SERVER_BASE)
@@ -95,7 +137,8 @@ if __name__ == "__main__":
                                                    ''))
 
     # create the main window
-    window = iivari.MainWindow(
+    from iivari.main import MainWindow
+    window = MainWindow(
         url=url,
         hostname=hostname,
         use_repl=use_repl,

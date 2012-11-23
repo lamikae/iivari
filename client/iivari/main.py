@@ -28,7 +28,8 @@ from PySide.QtWebKit import QWebSettings
 from logging import getLogger
 import iivari.logger
 logger = getLogger(__name__)
-from iivari import Display, Repl
+from iivari.display import Display
+from iivari.repl import Repl
 from iivari.cookiejar import CookieJar
 
 import settings
