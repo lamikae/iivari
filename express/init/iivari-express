@@ -17,6 +17,7 @@ NAME=iivari-express
 PIDDIR=/var/run/
 PIDFILE=${PIDDIR}/${NAME}.pid
 INSTALLDIR=/opt/iivari-express
+USER=iivari
 
 if [ -f /etc/default/$NAME ]
 then
@@ -44,13 +45,13 @@ case "$1" in
         then
                 log_warning_msg "Not starting $NAME because NODM_ENABLED is '$NODM_ENABLED' in /etc/default/$NAME"
         else
-                start-stop-daemon --start --oknodo --pidfile ${PIDFILE} --make-pidfile --background --exec /usr/bin/iivari-express
+                start-stop-daemon --start --oknodo --chuid $USER --pidfile ${PIDFILE} --make-pidfile --background --exec /usr/bin/iivari-express
         fi
         [ "$VERBOSE" != no ] && log_end_msg $?
         ;;
     stop)
         [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
-        start-stop-daemon --stop --pidfile ${PIDFILE} --oknodo
+        start-stop-daemon --stop --pidfile ${PIDFILE} --oknodo --user $USER
         rm -f ${PIDFILE}
         # just make sure it's gone..
         killall -9 node
