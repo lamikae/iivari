@@ -88,11 +88,16 @@ class ConcurrentRotatingColoredLogger(logging.Logger):
 
     def __init__(self, name):
         logging.Logger.__init__(self, name, self.level)
-        
+
         if self.filename is not None:
-            # Rotate log after reaching sizelimit, keep 25 old copies.
-            handler = ConcurrentRotatingFileHandler(
-                self.filename, "a", self.sizelimit, 25)
+            try:
+                # Rotate log after reaching sizelimit, keep 25 old copies.
+                handler = ConcurrentRotatingFileHandler(
+                    self.filename, "a", self.sizelimit, 25)
+            except IOError, e:
+                print e
+                # I/O error on file, log to stdout
+                handler = logging.StreamHandler()
         else:
             handler = logging.StreamHandler()
 
