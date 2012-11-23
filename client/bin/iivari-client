@@ -7,4 +7,4 @@ iivari-display_on
 unclutter -idle 1 -root &
 
 # Start iivari-infotv
-python -m iivari.kiosk "$@"
+python -m iivari.client "$@"

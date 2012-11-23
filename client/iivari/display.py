@@ -43,7 +43,7 @@ class Display(QtCore.QObject):
         # add the proxy object "display" to window
         self.page.mainFrame().addToJavaScriptWindowObject("display", self)
 
-        # set the kiosk hostname
+        # set the client hostname
         self.page.mainFrame().evaluateJavaScript(
             """
             if (window.displayCtrl) {

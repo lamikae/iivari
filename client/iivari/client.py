@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     Invoke from the command line:
 
-        $ python -m iivari.kiosk [args]
+        $ python -m iivari.client [args]
 
     """
     logger = getLogger(__name__)
