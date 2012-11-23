@@ -1,6 +1,6 @@
 #!/bin/sh
 LOGDIR=/opt/iivari
-cd /opt/iivari-express
+cd /var/lib/iivari-express
 # FIXME: production env needs some adjustment for debianization
 export NODE_ENV=development
 npm start 2>&1 | tee -a ${LOGDIR}/express-$NODE_ENV.log

@@ -10,7 +10,7 @@ INSTALLFILES ?= \
 	package.json \
 	site.js
 
-INSTALLDIR=/opt/iivari-express
+INSTALLDIR=/var/lib/iivari-express
 
 INCLUDE_NODE_MODULES=true
 

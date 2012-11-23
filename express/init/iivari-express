@@ -16,7 +16,7 @@ DESC="Simple image randomizer"
 NAME=iivari-express
 PIDDIR=/var/run/
 PIDFILE=${PIDDIR}/${NAME}.pid
-INSTALLDIR=/opt/iivari-express
+INSTALLDIR=/var/lib/iivari-express
 USER=iivari
 
 if [ -f /etc/default/$NAME ]
