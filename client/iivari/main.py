@@ -145,8 +145,7 @@ class MainWebView(QtWebKit.QWebView):
             'LocalContentCanAccessFileUrls: %s' % (
                 qsettings.testAttribute(
                     QWebSettings.LocalContentCanAccessFileUrls)),
-
-            ]))
+            '']))
 
         # wait for server
         ping = False

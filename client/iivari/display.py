@@ -56,7 +56,7 @@ class Display(QtCore.QObject):
             """ % self.hostname)
 
         self.powerOn()
-        logger.debug("Initialised Display %s" % self.hostname)
+        logger.info("Display %s running" % self.hostname)
 
 
     @QtCore.Slot()

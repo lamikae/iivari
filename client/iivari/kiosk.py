@@ -111,6 +111,6 @@ if __name__ == "__main__":
     window.raise_()
 
     # start application and quit on exit
-    logger.info("Initialization complete. Launching application.")
+    logger.debug("Launching Qt")
     sys.exit(app.exec_())
 
