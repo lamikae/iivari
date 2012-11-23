@@ -1,3 +1,10 @@
+= 1.4.2
+Maintenance release
+
+ * Adjust debian packaging
+ * On log file I/O error, log to stdout
+
+
 = 1.4.1
 Maintenance release
 
