@@ -31,7 +31,7 @@ class exports.FileSystemSlides
     # @media_root can be served using file:// urls
     # or http:// for serving the directory remotely.
     @urlloc = ""
-    @media_root = "/media/usb"
+    @media_root = ""
     @config = (options) =>
         options ?= {}
         @urlloc = options.url
@@ -52,12 +52,23 @@ class exports.FileSystemSlides
         try
             @slides = _.map @images(), (image) =>
                 title = image.replace "#{@media_root}/", ""
-                @slide_json image, title
+                img_path = image.replace @media_root, ""
+                image_src = "#{@urlloc}#{img_path}"
+                @slide_json image_src, title
             return _.shuffle(@slides)[0...20]
 
         catch err
             console.log "Error reading images: #{err}"
-            return []
+            title = err
+            telefunken1 = @slide_json \
+                "file:///usr/share/iivari/assets/Telefunken_FuBK_test_pattern.png",
+                title
+            telefunken2 = @slide_json \
+                "file:///usr/share/iivari/assets/Telefunken_FuBK_test_pattern.png",
+                "mount media drive onto #{@media_root} and I will show the images for you, sir"
+            # NOTE: jquery.superslides does not trigger slides.initialized
+            #       signal when given an array with only one slide
+            return [telefunken1, telefunken2]
 
 
     # List of image files on @media_root.
@@ -111,19 +122,16 @@ class exports.FileSystemSlides
 
 
     # Slide fullscreen image template for client
-    @slide_json = (image_file, title) ->
-        img_path = image_file.replace @media_root, ""
-        image_src = "#{@urlloc}#{img_path}"
-        html = """
-        <div class="title_container">\
-            <h1 class="title">#{title}</h1>\
-        </div>\
-        <div class="content">\
-            <div class="fullimg"><img src="#{image_src}"></div>\
-        </div>
-        """
-        return {
-            "slide_html": html,
+    @slide_json = (image_src, title) ->
+        {
+            "slide_html": """
+<div class="title_container">\
+    <h1 class="title">#{title}</h1>\
+</div>\
+<div class="content">\
+    <div class="fullimg"><img src="#{image_src}"></div>\
+</div>
+            """,
             "slide_delay": 15
         }
 
