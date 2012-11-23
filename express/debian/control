@@ -1,7 +1,7 @@
 Source: iivari-express
 Maintainer: lamikae <mikael.lammentausta+github+@gmail.com>
-Section: misc
-Priority: optional
+Section: web
+Priority: extra
 Build-Depends: debhelper (>= 7), npm
 Standards-Version: 3.8.4
 
