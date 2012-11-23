@@ -103,6 +103,7 @@ R -- arvo uudet kuvat<br>
 
 
     start: ->
+        # clear the default background
         $("body").css
             "background-image": "null",
             "background": "black",
