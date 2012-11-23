@@ -1,3 +1,11 @@
+= 1.5.0
+Compatibility with iivari-express v0.9
+
+ * No longer install /etc/iivarirc
+ * Install iivari-client, remove old startup files
+ * Refactor module loading, add --rcfile option
+
+
 = 1.4.2
 Maintenance release
 

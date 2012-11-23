@@ -8,7 +8,7 @@ def read(fname):
 # Import package version. Relative path is searched
 # before system python packages.
 #from iivari import __version__
-__version__ = "1.4.2"
+__version__ = "1.5.0"
 
 setup(name="iivari-client",
       version=__version__,
