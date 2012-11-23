@@ -119,7 +119,6 @@ R -- arvo uudet kuvat<br>
         if (not @preview) and @json_url and @data_update_interval
             setInterval @updateSlideData, @data_update_interval
 
-
         document.onkeydown = (event) =>
             # do not intercept Ctrl^ commands
             ctrlDown = event.ctrlKey || event.metaKey # Mac support
@@ -164,6 +163,8 @@ R -- arvo uudet kuvat<br>
                 when 82
                     @updateSlideData(true)
                     event.preventDefault()
+
+        console.log "Info: express slideshow started"
 
 
     toggleFullscreen: =>
