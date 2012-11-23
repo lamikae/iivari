@@ -77,8 +77,10 @@ class exports.FileSystemSlides
     @images = () ->
         # media root needs to be something remotely sensible
         unless @media_root.match('^/...')
-            console.log "Refuse to read from #{@media_root} - minimum directory name length 3"
-            return []
+            throw "Refuse to read from #{@media_root} - minimum directory name length 3"
+
+        unless path.existsSync @media_root
+            throw "#{@media_root} does not exist"
 
         # index file exists, return its contents
         indexfile = @media_root + "/" + @index_filename
