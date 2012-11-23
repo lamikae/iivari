@@ -218,6 +218,7 @@ R -- arvo uudet kuvat<br>
         # clear current slide abruptly
         $(".slides").html()
         # render new slideset
+        # (@slide_html is a property of each @slideData)
         $(".slides").render(
             @slideData,
             {slide: -> html: @slide_html})
