@@ -1,3 +1,10 @@
+= 0.9.0
+
+ * Install /usr/bin/iivari-slideshow which will load express configuration
+ * Make iivari-express tcp port configurable
+ * Show telefunken slides if no images were found in @media_root
+
+
 = 0.8.2
 Debianization.
 
