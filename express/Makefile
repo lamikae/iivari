@@ -46,6 +46,12 @@ install:
 	install -D -o root -g root -m 755 etc/iivarirc \
 		$(DESTDIR)$(INSTALLDIR)/iivarirc
 
+	# /etc/init.d/iivari nodm client script
+	install -D -o root -g root -m 755 init/iivari \
+		$(DESTDIR)/etc/init.d/iivari
+	install -D -o root -g root -m 755 etc/default/nodm \
+		$(DESTDIR)$(INSTALLDIR)/iivarirc
+
 	if [ $(INCLUDE_NODE_MODULES) = true ]; then \
 #  ***\
 #  *** Downloading dependencies from node.js repositories        ***\
