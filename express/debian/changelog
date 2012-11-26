@@ -1,8 +1,8 @@
 iivari-express (0.9.0-1) unstable; urgency=low
 
-  *
+  * notify on screen if media root contains no images
 
- -- lamikae <mikael.lammentausta+github+@gmail.com>  Fri, 23 Nov 2012 18:32:00 +0200
+ -- lamikae <mikael.lammentausta+github+@gmail.com>  Mon, 26 Nov 2012 17:40:00 +0200
 
 
 iivari-express (0.8.2-1) unstable; urgency=low

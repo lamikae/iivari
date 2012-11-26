@@ -12,12 +12,12 @@ __version__ = "1.5.0"
 
 setup(name="iivari-client",
       version=__version__,
-      maintainer="Mikael Lammentausta",
+      maintainer="github.com/lamikae",
       maintainer_email="mikael.lammentausta+github@gmail.com",
       url="https://github.com/lamikae/iivari/",
       license="GPL-2",
-      description="Webbrowser for iivari info screens",
-      long_description=read("README.md"),
+      description="Iivari digital signage viewer",
+      # long_description=read("README.md"),
       packages=["iivari", "iivari/logger"],
       scripts=["bin/iivari-client",
                "bin/iivari-display_off",
@@ -26,4 +26,6 @@ setup(name="iivari-client",
       data_files=[("/usr/share/iivari/assets", glob.glob("iivari/assets/*")),
                   ("/usr/share/applications", ["iivari-infotv.desktop"]),
                   ],
+                  # no configuration is installed;
+                  # iivari-express provides example configuration.
       )
