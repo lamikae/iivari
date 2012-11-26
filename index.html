@@ -7,60 +7,54 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/custom.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Iivari</h1>
-        <ul>
-          <li><a href="https://github.com/lamikae/iivari">View On <strong>GitHub</strong></a></li>
-          <li><a href="#debian">Download <strong>DEB Files</strong></a></li>
-          <li><a href="https://github.com/lamikae/iivari/zipball/master">Download <strong>ZIP File</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>Welcome to Iivari</h3>
+<div class="wrapper">
 
-<p>Iivari is a digital signage system.<br>
-Should you need a simple image slideshow for leisure, look at the <strong>express</strong> setup.<br>
-If your interests are forking in organisational context, mind the <strong>server</strong> codebase.<br>
-<strong>Client</strong> teams up with WebKit, Qt, and Python to operate.
- </p>
+  <section>
+    <h1><em>Iivari</em> is a digital signage system.</h1>
 
+    <h3>Client</h3>
+    <p>Capable to fetch and show should Qt, WebKit and PySide bindings coexist.<br>
+      See the <a href="http://github.com/lamikae/iivari/wiki/Client-installation-instructions">client installation instructions in the wiki</a></p>
 
-<h3>Client</h3>
+    <h3>Server</h3>
+    <p>Provides slide management interface for organisations.<br>
+      See the <a href="http://github.com/lamikae/iivari/wiki/Server-installation-instructions">server installation instructions in the wiki</a></p>
 
-<p>Qt WebKit application.<br>
-  See the <a href="http://github.com/lamikae/iivari/wiki/Client-installation-instructions">client installation instructions in the wiki</a></p>
+    <h3>Express</h3>
+    <p>Simple image signage system.<br>
+      See <a href="http://github.com/lamikae/iivari/wiki/Iivari-express">iivari-express in the wiki</a>.<br>
+    </p>
 
-<h3>Server</h3>
-
-<p>Provides slide management interface for organisations.<br>
-  Ruby on Rails application.<br>
-  See the <a href="http://github.com/lamikae/iivari/wiki/Server-installation-instructions">server installation instructions in the wiki</a></p>
-
-<h3>Express</h3>
-<p>Simple image signage system.  Codename `raspbian`.<br>
-  Node.js application.<br>
-  See <a href="http://github.com/lamikae/iivari/wiki/Iivari-express">iivari-express in the wiki</a>.<br>
-</p>
-<h4>
-  <a name="debian">
-    Express packages for Debian and Ubuntu variants
-  </a>
-</h4>
-<p>
-  * coming *
-</p>
-      </section>
-      <footer>
-      </footer>
+    <div id="express-guide">
+      <img src="assets/iivari-express.png" alt="">
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+  </section>
+
+  <header>
+    <ul>
+      <li><a href="https://github.com/lamikae/iivari">View On <strong>GitHub</strong></a></li>
+      <li><a href="https://github.com/lamikae/iivari/zipball/master">Download <strong>ZIP File</strong></a></li>
+      <li><a href="#debian">Download <strong>DEB Files</strong></a></li>
+    </ul>
+
+    <div id="debian">
+      <span> Packages for Debian and Ubuntu variants </span> <br>
+      <a href="downloads/iivari-client_1.5.0-1_all.deb">
+        iivari-client_1.5.0-1_all.deb</a><br>
+      <a href="downloads/iivari-express_0.9.1-1_all.deb">
+        iivari-express_0.9.1-1_all.deb</a><br>
+    </div>
+  </header>
+
+</div>
+<script src="javascripts/scale.fix.js"></script>
 
   </body>
 </html>

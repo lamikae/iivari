@@ -1,0 +1,62 @@
+/* apply a natural box layout model to all elements */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body {
+    background: white;
+    background-size: auto auto;
+    background-repeat: no-repeat;
+    background-position: 100% center;
+    background-attachment: fixed;
+    background-image: url("../assets/bg.jpg");
+    padding: 1em
+}
+h1 {
+    font-family: Times;
+    font-style: italic;
+    font-weight: bold;
+}
+h1 em {
+font-size: larger;
+}
+p em {
+    font-family: monospace;
+}
+header {
+    padding: 0;
+    position: static;
+    float: left;
+}
+section {
+    position: auto;
+    float: left;
+    width: auto;
+    opacity: 0.81;
+    background: #f4f4fa;
+    border: 0;
+    padding: 1em;
+}
+header, section {
+}
+header ul {
+    position: static;
+}
+
+.wrapper {
+    overflow: visible;
+}
+
+#express-guide {
+    float: left;
+}
+#express-guide img {
+    padding: 0 0 1em;
+}
+#debian {
+    float: left;
+    margin: 0 0 1em 1em;
+    font-family: georgia;
+    line-height: 1.4em;
+}
+#debian span {
+    font-size: 0.8em;
+}
