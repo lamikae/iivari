@@ -118,7 +118,7 @@ class exports.FileSystemSlides
 
         glob_options = {}
         images = _.select glob.sync("#{path}/**/*", glob_options), (file) ->
-            file.match(/jpg/i)
+            file.match(/jpe?g/i)
 
         t1 = Date.now()
         dt = (t1-t0)/1000

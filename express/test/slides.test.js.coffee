@@ -41,7 +41,7 @@ describe "FileSystemSlides", ->
 
         it "finds images from the filesystem", ->
             images = FileSystemSlides.images "#{__dirname}/fixtures/root1"
-            _.size(images).should.eql 7
+            _.size(images).should.eql 8
             # files are in alphabetical order
             images[0].should.eql @fixture_root+"/A/B/C/five.jpg"
             images[1].should.eql @fixture_root+"/A/B/C/four.jpg"
@@ -50,21 +50,22 @@ describe "FileSystemSlides", ->
             images[4].should.eql @fixture_root+"/A/B/C/two.JPG"
             images[5].should.eql @fixture_root+"/E/F/seven.jpg"
             images[6].should.eql @fixture_root+"/E/F/six.jpg"
+            images[7].should.eql @fixture_root+"/G/eight.jpeg"
 
 
         it "writes image file index", ->
             images = FileSystemSlides.images "#{__dirname}/fixtures/root1"
-            _.size(images).should.eql 7
+            _.size(images).should.eql 8
             # verify index
             path.existsSync(@indexfile).should.eql true
             images_from_index = FileSystemSlides.images "#{__dirname}/fixtures/root1"
-            _.size(images_from_index).should.eql 7
+            _.size(images_from_index).should.eql 8
             images_from_index.should.eql images
 
 
         it "randomises slides", ->
             slideset1 = FileSystemSlides.shuffle()
-            _.size(slideset1).should.eql 7
+            _.size(slideset1).should.eql 8
             slideset2 = FileSystemSlides.shuffle()
-            _.size(slideset2).should.eql 7
+            _.size(slideset2).should.eql 8
             slideset1.should.not.eql slideset2
