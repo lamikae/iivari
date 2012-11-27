@@ -31,7 +31,7 @@ section {
     float: left;
     width: auto;
     opacity: 0.8;
-    background: #f4f4fa;
+    background: #fafafe;
     border: 0;
     padding: 1em;
 }
@@ -53,7 +53,7 @@ header ul {
     padding: 0 0 1em;
 }
 #debian {
-    background: #f4f4fa;
+    background: #fafafe;
     opacity: 0.8;
     float: left;
     margin: 0 0 1em 1em;
