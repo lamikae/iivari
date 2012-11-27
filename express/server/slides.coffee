@@ -38,10 +38,13 @@ class exports.FileSystemSlides
         unless @urlloc
             console.log "Warning: config file does not define url"
             return
-        try
-            @media_root = @urlloc.match(/file:\/\/(.*)/)[1]
-            console.log "Files from local media root #{@media_root}"
-            # if the filesystem is remote, @media_root should mirror it
+        if options.media_root
+            @media_root = options.media_root
+        else
+            try
+                @media_root = @urlloc.match(/file:\/\/(.*)/)[1]
+                console.log "Files from local media root #{@media_root}"
+                # if the filesystem is remote, @media_root should mirror it
 
 
     # Finds images from filesystem at @media_root,
