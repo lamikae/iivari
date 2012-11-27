@@ -30,7 +30,7 @@ section {
     position: auto;
     float: left;
     width: auto;
-    opacity: 0.81;
+    opacity: 0.8;
     background: #f4f4fa;
     border: 0;
     padding: 1em;
@@ -43,6 +43,7 @@ header ul {
 
 .wrapper {
     overflow: visible;
+    width: auto;
 }
 
 #express-guide {
@@ -52,8 +53,11 @@ header ul {
     padding: 0 0 1em;
 }
 #debian {
+    background: #f4f4fa;
+    opacity: 0.8;
     float: left;
     margin: 0 0 1em 1em;
+    padding: 0.8em;
     font-family: georgia;
     line-height: 1.4em;
 }
