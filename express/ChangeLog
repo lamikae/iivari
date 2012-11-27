@@ -1,3 +1,8 @@
+= 0.9.2
+
+ * Add media_root option
+
+
 = 0.9.1
 
  * Install nodm configuration that will start iivari-slideshow

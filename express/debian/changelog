@@ -1,3 +1,10 @@
+iivari-express (0.9.2-1) unstable; urgency=low
+
+  * add media_root option
+
+ -- lamikae <mikael.lammentausta+github+@gmail.com>  Tue, 27 Nov 2012 10:21:00 +0200
+
+
 iivari-express (0.9.1-1) unstable; urgency=low
 
   * provide /etc/init.d/iivari nodm init script
