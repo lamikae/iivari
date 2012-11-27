@@ -7,6 +7,6 @@ Standards-Version: 3.8.4
 
 Package: iivari-express
 Architecture: all
-Depends: ${misc:Depends}, nodejs, npm
+Depends: ${misc:Depends}, nodejs, npm, nodm, unclutter, x11-xserver-utils
 Description: Simple image randomizer for iivari-client
  .
