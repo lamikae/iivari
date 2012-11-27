@@ -5,10 +5,10 @@ body {
     background: white;
     background-size: auto auto;
     background-repeat: no-repeat;
-    background-position: 100% 0;
-    background-attachment: fixed;
+    background-position: 100% 7em;
+    background-attachment: scroll;
     background-image: url("../assets/bg.jpg");
-    padding: 1em
+    padding: 1em;
 }
 h1 {
     font-family: Times;
@@ -27,15 +27,12 @@ header {
     float: left;
 }
 section {
-    position: auto;
     float: left;
     width: auto;
     opacity: 0.8;
     background: #fafafe;
     border: 0;
     padding: 1em;
-}
-header, section {
 }
 header ul {
     position: static;
@@ -63,4 +60,7 @@ header ul {
 }
 #debian span {
     font-size: 0.8em;
+}
+#debian:hover {
+    opacity: 0.9;
 }
