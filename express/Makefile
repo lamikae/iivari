@@ -50,7 +50,7 @@ install:
 	install -D -o root -g root -m 755 init/iivari \
 		$(DESTDIR)/etc/init.d/iivari
 	install -D -o root -g root -m 755 etc/default/nodm \
-		$(DESTDIR)$(INSTALLDIR)/iivarirc
+		$(DESTDIR)$(INSTALLDIR)/nodm
 
 	if [ $(INCLUDE_NODE_MODULES) = true ]; then \
 #  ***\
