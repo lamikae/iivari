@@ -2,8 +2,8 @@
     "name" : "iivari-express"
     , "version": "0.9.2"
     , "scripts": {
-        "test": "node_modules/.bin/mocha"
-        , "start": "node site.js"
+        "start": "node site.js"
+        , "test": "NODE_ENV=test mocha"
     }
     , "main": "./site"
     , "dependencies": {
