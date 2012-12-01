@@ -22,5 +22,6 @@
         , "should": ""
         , "supertest": "0.5"
         , "cheerio": "*"
+        , "docco": "*"
     }
 }

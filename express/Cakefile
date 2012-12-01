@@ -1,0 +1,32 @@
+fs            = require 'fs'
+{spawn, exec} = require 'child_process'
+
+# ANSI Terminal Colors
+bold  = '\x1B[0;1m'
+red   = '\x1B[0;31m'
+green = '\x1B[0;32m'
+reset = '\x1B[0m'
+
+pkg = JSON.parse fs.readFileSync('./package.json')
+
+log = (message, color, explanation) ->
+  console.log color + message + reset + ' ' + (explanation or '')
+
+
+task 'docs', 'Generate annotated source code with Docco', ->
+  files = []
+  fs.readdir 'client', (err, contents) ->
+    files.push "client/#{file}" for file in contents when /\.coffee$/.test file
+    fs.readdir 'server', (err, contents) ->
+      files.push "server/#{file}" for file in contents when /\.coffee$/.test file
+      try
+        log "Generating documentation for #{pkg.name}", green
+        cmd = 'node_modules/.bin/docco'
+        docco = spawn cmd, files
+        docco.stdout.pipe process.stdout
+        docco.stderr.pipe process.stderr
+        docco.on 'exit', (status) -> callback?() if status is 0
+      catch err
+        log err.message, red
+
+
