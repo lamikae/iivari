@@ -26,6 +26,8 @@ module.exports = (app, js, css, config) ->
         res.render('index', { title: 'Express greetings!' })
 
 
+    # Iivari-Express client.
+    # Interactive slideshow.
     app.get "/client", (req, res) ->
         console.log "GET /client"
         try
@@ -39,6 +41,7 @@ module.exports = (app, js, css, config) ->
             console.log e
 
 
+    # 20 random slides from local media in json format.
     app.get "/slides", (req, res) ->
         console.log "GET /slides"
         try

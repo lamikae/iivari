@@ -16,6 +16,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ###
 
+# UIMessage is a small piece of information on the screen.
+# The slide title, notice about background action etc.
 class UIMessage
 
     constructor: (options) ->
@@ -70,7 +72,7 @@ class UIMessage
         @visible = true
 
 
-# Plugin
+# Initialise UIMessage.
 $.fn.uimessage = (options) ->
     if typeof options == "string"
         api = $.fn.uimessage.api

@@ -16,21 +16,26 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ###
 
+# Create Express-2 server with Piler asset manager
 express = require "express"
 fs = require "fs"
 hbs = require "hbs"
 piler = require "piler"
 
-rootDir = "#{__dirname}/.."
 app = module.exports = express.createServer()
 css = piler.createCSSManager()
 js = piler.createJSManager()
 css.bind app
 js.bind app
 
+rootDir = "#{__dirname}/.."
+
+# Configure file /etc/iivari-express.conf, use it.
+# Extends config from rootDir config.json.
 defaults =
     port: 8080
     sessionSecret: "Very secret string. (override me)"
+    slideshow: { url: "file:///media/usb" }
 try
     conf_file = "/etc/iivari-express.conf"
     config = JSON.parse fs.readFileSync conf_file
@@ -40,8 +45,6 @@ catch e
 try
     for k, v of JSON.parse(fs.readFileSync rootDir + "/config.json")
         config[k] ?= v
-# catch e
-    # console.error "Could not load config.json."
 for k, v of defaults
     config[k] ?= v
 console.log "Info: slideshow url: #{config.slideshow.url}, theme: #{config.slideshow.theme}"
@@ -51,15 +54,14 @@ if process.env.NODE_ENV == "production"
 
 
 app.configure ->
-    # use handlebars template engine
-    app.set "views", "#{rootDir}/client/views"
-    app.set "view engine", "hbs"
-
     app.use express.bodyParser()
     app.use express.methodOverride()
     app.use app.router
 
-    # Connect Handlebars to Piler Asset Manager
+    # Use and connect Handlebars to Piler
+    app.set "views", "#{rootDir}/client/views"
+    app.set "view engine", "hbs"
+
     hbs.registerHelper "renderScriptTags", (pile) ->
         js.renderTags pile
     hbs.registerHelper "renderStyleTags", (pile) ->
@@ -75,7 +77,7 @@ app.configure ->
             # we can cache it in production
             source = fs.readFileSync rootDir + "/views/client/#{ name }.hbs"
 
-    # vendor assets
+    # Add vendor assets to Piler
     css.addFile "#{rootDir}/vendor/stylesheets/jquery-ui.css"
     js.addFile "#{rootDir}/vendor/javascripts/jquery.js"
     js.addFile "#{rootDir}/vendor/javascripts/jquery-ui.js"
@@ -86,7 +88,7 @@ app.configure ->
     js.addFile "#{rootDir}/vendor/javascripts/moment-fi.js"
     js.addFile "#{rootDir}/vendor/javascripts/RequestAnimationFrame.js"
 
-    # app
+    # Add application assets to Piler
     css.addFile "#{rootDir}/client/styles/reset.styl"
     css.addFile "#{rootDir}/client/styles/main.styl"
     js.addFile "#{rootDir}/client/slideshow.coffee"
@@ -101,10 +103,10 @@ app.configure "development", ->
 app.configure "production", ->
     app.use express.errorHandler()
 
-# Add routes and real application logic
+# Add routes and application logic
 require("./routes") app, js, css, config
 
-# start the server
+# Start the server
 port = process.env.PORT || config.port
 app.listen port, ->
     console.log(
