@@ -16,6 +16,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ###
 
+fs = require "fs"
+path = require "path"
 http = require "http"
 slides = require "./slides"
 
@@ -32,13 +34,19 @@ module.exports = (app, js, css, config) ->
         console.log "GET /client"
         try
             theme = config.slideshow.theme
-        catch e
+        catch err
             theme = "default"
+        # read package.json version
         try
-            # FIXME: access package.json version
-            res.render 'slideshow', { theme: theme, title: "Iivari-express v0.9.2" }
-        catch e
-            console.log e
+            version = JSON.parse(fs.readFileSync(path.join(
+                __dirname, '..', 'package.json'))).version
+        catch err
+            console.log err
+            version = "ö.ö.ö"
+        try
+            res.render 'slideshow', { theme: theme, title: "Iivari-express v#{version}" }
+        catch err
+            console.log err
 
 
     # 20 random slides from local media in json format.
@@ -47,5 +55,5 @@ module.exports = (app, js, css, config) ->
         try
             slides.FileSystemSlides.config config.slideshow
             res.json slides.FileSystemSlides.shuffle()
-        catch e
-            console.log e
+        catch err
+            console.log err
