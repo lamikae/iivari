@@ -20,14 +20,14 @@ should = require "should"
 fs = require "fs"
 path = require "path"
 _ = require "underscore"
-{FileSystemSlides} = require "#{__dirname}/../server/slides"
+{FileSystemSlides} = require path.join __dirname, "..", "..", "server", "slides"
 
 describe "FileSystemSlides", ->
 
     beforeEach ->
-        @fixture_root = "#{__dirname}/fixtures/root1"
+        @fixture_root = fs.realpathSync path.join __dirname, "..", "fixtures", "root1"
         FileSystemSlides.media_root = @fixture_root
-        @indexfile = @fixture_root+"/"+FileSystemSlides.index_filename
+        @indexfile = path.join @fixture_root, FileSystemSlides.index_filename
         # remove image index file
         if path.existsSync @indexfile
             fs.unlinkSync @indexfile
@@ -40,7 +40,7 @@ describe "FileSystemSlides", ->
     describe "shuffle", ->
 
         it "finds images from the filesystem", ->
-            images = FileSystemSlides.images "#{__dirname}/fixtures/root1"
+            images = FileSystemSlides.images @fixture_root
             _.size(images).should.eql 8
             # files are in alphabetical order
             images[0].should.eql @fixture_root+"/A/B/C/five.jpg"
@@ -54,11 +54,11 @@ describe "FileSystemSlides", ->
 
 
         it "writes image file index", ->
-            images = FileSystemSlides.images "#{__dirname}/fixtures/root1"
+            images = FileSystemSlides.images @fixture_root
             _.size(images).should.eql 8
             # verify index
             path.existsSync(@indexfile).should.eql true
-            images_from_index = FileSystemSlides.images "#{__dirname}/fixtures/root1"
+            images_from_index = FileSystemSlides.images @fixture_root
             _.size(images_from_index).should.eql 8
             images_from_index.should.eql images
 
