@@ -21,5 +21,6 @@
           "mocha": "1.7"
         , "should": ""
         , "supertest": "0.5"
+        , "cheerio": "*"
     }
 }
