@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Copyright © 2011 - 2012 Opinsys Oy
+                   2012 lamikae
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -25,7 +26,7 @@ import __builtin__
 from PySide import QtGui, QtCore, QtWebKit, QtNetwork
 from PySide.QtWebKit import QWebSettings
 
-from logging import getLogger
+from logging import getLogger, INFO
 import iivari.logger
 logger = getLogger(__name__)
 from iivari.display import Display
@@ -272,6 +273,17 @@ class MainNetworkAccessManager(QtNetwork.QNetworkAccessManager):
         if self.token:
             #logger.debug("X-Iivari-Auth: "+self.token)
             request.setRawHeader("X-Iivari-Auth", self.token)
+
+        # log debug information about the request
+        if logger.level < INFO:
+            try:
+                logger.debug("%s: %s" % (
+                    [None, "HEAD", "GET", "PUT", "POST", "DELETE", "CUSTOM"][op],
+                    request.url().toString()))
+            except Exception, e:
+                logger.debug(e)
+
+        # create request
         return QtNetwork.QNetworkAccessManager.createRequest(
             self, op, request, outgoingData)
 
