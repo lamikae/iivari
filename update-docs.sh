@@ -1,4 +1,7 @@
 #!/bin/sh
+# Generates docs from sources.
+# Git state needs to be clean, as branches are changed
+# during the operation.
 
 # Document source branch
 branch=develop
@@ -18,7 +21,6 @@ function express_docs {
 	if [ -x $cake ]; then
 		npm install || die
 	fi
-	# still no luck?
 	[ -x $cake ] || die "$cake is a lie"
 	$cake docs
 	cd - &>/dev/null
@@ -27,12 +29,13 @@ function express_docs {
 # Generates documentation from $branch, moves
 # the files to docs/ directory in current branch.
 function update_docs {
+	# remember current branch (gh-pages)
 	my_branch=$(parse_git_branch)
-	[[ -z $my_branch ]] && die "Could not read current branch!"
-
+	[ -z $my_branch ] && die "Could not read current branch!"
+	# switch to code branch
 	git checkout $branch || die
+	# generate the docs
 	express_docs
-
 	# return to original branch
 	git checkout $my_branch || die
 	# clean existing docs
@@ -42,3 +45,5 @@ function update_docs {
 }
 
 update_docs
+
+exit 0
