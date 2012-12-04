@@ -1,0 +1,302 @@
+<!DOCTYPE html>  <html> <head>   <title>jquery.superslides.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="jquery.superslides.html">                 jquery.superslides.coffee               </a>                                           <a class="source" href="slideshow.html">                 slideshow.coffee               </a>                                           <a class="source" href="uimessage.html">                 uimessage.coffee               </a>                                           <a class="source" href="index.html">                 index.coffee               </a>                                           <a class="source" href="routes.html">                 routes.coffee               </a>                                           <a class="source" href="slides.html">                 slides.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jquery.superslides.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Superslides</span> <span class="mf">0.4</span><span class="p">.</span><span class="mi">2</span>
+  <span class="nx">Fullscreen</span> <span class="nx">slideshow</span> <span class="nx">plugin</span> <span class="k">for</span> <span class="nx">jQuery</span>
+  <span class="k">by</span> <span class="nx">Nic</span> <span class="nx">Aitch</span> <span class="nx">@nicinabox</span>
+  <span class="nx">http</span><span class="o">://</span><span class="nx">nicinabox</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="sr">/superslides/</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">$window = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">)</span>
+<span class="nv">width = </span><span class="nx">$window</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
+<span class="nv">height = </span><span class="nx">$window</span><span class="p">.</span><span class="nx">height</span><span class="p">()</span>
+<span class="nv">is_mobile = </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/mobile/i</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>State control</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">first_load = </span><span class="kc">true</span>
+<span class="nv">play_interval = </span><span class="mi">0</span>
+<span class="nv">animating = </span><span class="kc">false</span>
+<span class="nv">size = </span><span class="mi">0</span>
+<span class="nv">multiplier = </span><span class="mi">3</span>
+<span class="nv">$control = </span><span class="p">[]</span>
+<span class="nv">$container = </span><span class="p">[]</span>
+<span class="nv">$nav = </span><span class="p">[]</span>
+<span class="nv">$children = </span><span class="p">[]</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Private methods</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">setup = </span><span class="nf">() -&gt;</span>
+  <span class="nx">setup_containers</span><span class="p">()</span>
+  <span class="nx">setup_children</span><span class="p">()</span>
+
+<span class="nv">setup_containers = </span><span class="o">-&gt;</span>
+  <span class="nx">$control</span><span class="p">.</span><span class="nx">css</span>
+    <span class="nv">position: </span><span class="s">&#39;relative&#39;</span>
+
+  <span class="k">if</span> <span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="nx">$control</span><span class="p">.</span><span class="nx">css</span>
+      <span class="nv">width: </span><span class="nx">width</span> <span class="o">*</span> <span class="nx">multiplier</span>
+      <span class="nv">height: </span><span class="nx">height</span>
+      <span class="nv">left: </span><span class="o">-</span><span class="nx">width</span>
+
+    <span class="nx">$container</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
+
+<span class="nv">setup_children = </span><span class="o">-&gt;</span>
+  <span class="k">if</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">scrollable</span>
+    <span class="nx">$children</span><span class="p">.</span><span class="nx">each</span> <span class="o">-&gt;</span>
+      <span class="nv">$scrollable = </span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&#39;.scrollable&#39;</span><span class="p">)</span>
+      <span class="nx">unless</span> <span class="nx">$scrollable</span>
+        <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">wrapInner</span><span class="p">(</span><span class="s">&#39;&lt;div class=&quot;scrollable&quot; /&gt;&#39;</span><span class="p">)</span>
+
+      <span class="nx">$scrollable</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&#39;img&#39;</span><span class="p">).</span><span class="o">not</span><span class="p">(</span><span class="s">&#39;.keep-original&#39;</span><span class="p">)</span>
+                  <span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">$scrollable</span><span class="p">)</span>
+
+  <span class="nx">$children</span><span class="p">.</span><span class="o">not</span><span class="p">(</span><span class="s">&#39;.current&#39;</span><span class="p">).</span><span class="nx">css</span>
+    <span class="nv">display: </span><span class="s">&#39;none&#39;</span>
+    <span class="nv">position: </span><span class="s">&#39;absolute&#39;</span>
+    <span class="nv">overflow: </span><span class="s">&#39;hidden&#39;</span>
+    <span class="nv">top: </span><span class="mi">0</span>
+    <span class="nv">left: </span><span class="nx">width</span>
+    <span class="nv">zIndex: </span><span class="mi">0</span>
+
+  <span class="nx">adjust_slides_size</span> <span class="nx">$children</span>
+
+<span class="nv">load_image = </span><span class="nf">($img, callback) -&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;img&gt;&quot;</span><span class="p">,</span>
+      <span class="nv">src: </span><span class="nx">$img</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">)</span>
+    <span class="p">).</span><span class="nx">load</span> <span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="nx">callback</span> <span class="k">instanceof</span> <span class="nb">Function</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+
+<span class="nv">adjust_image_position = </span><span class="nf">($img) -&gt;</span>
+  <span class="nx">unless</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-height&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-width&#39;</span><span class="p">)</span>
+    <span class="nx">load_image</span> <span class="nx">$img</span><span class="p">,</span> <span class="nf">(image) -&gt;</span>
+      <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-height&#39;</span><span class="p">,</span> <span class="nx">image</span><span class="p">.</span><span class="nx">height</span><span class="p">).</span><span class="nx">removeAttr</span><span class="p">(</span><span class="s">&#39;height&#39;</span><span class="p">)</span>
+      <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-width&#39;</span><span class="p">,</span> <span class="nx">image</span><span class="p">.</span><span class="nx">width</span><span class="p">).</span><span class="nx">removeAttr</span><span class="p">(</span><span class="s">&#39;width&#39;</span><span class="p">)</span>
+      <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;aspect-ratio&#39;</span><span class="p">,</span> <span class="nx">image</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="nx">image</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span>
+      <span class="nx">adjust_image_position</span> <span class="nx">$img</span>
+    <span class="k">return</span>
+
+  <span class="nv">scale_width = </span><span class="nx">height</span> <span class="o">*</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;aspect-ratio&#39;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Horizontal centering</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="nx">width</span> <span class="o">&gt;</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-width&#39;</span><span class="p">)</span>
+    <span class="nx">$img</span><span class="p">.</span><span class="nx">css</span>
+      <span class="nv">left: </span><span class="mi">0</span>
+  <span class="k">else</span>
+    <span class="k">if</span> <span class="nx">scale_width</span> <span class="o">&gt;</span> <span class="nx">width</span>
+      <span class="nx">$img</span><span class="p">.</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="o">-</span><span class="p">(</span><span class="nx">scale_width</span> <span class="o">-</span> <span class="nx">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span>
+      <span class="nx">$img</span><span class="p">.</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="o">-</span><span class="p">(</span><span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-width&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Vertical centering</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="nx">height</span> <span class="o">&lt;</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-height&#39;</span><span class="p">)</span>
+    <span class="nx">$img</span><span class="p">.</span><span class="nx">css</span>
+      <span class="nv">top: </span><span class="o">-</span><span class="p">(</span><span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-height&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+  <span class="k">if</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-height&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$img</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;original-width&#39;</span><span class="p">)</span>
+    <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.image_adjusted&#39;</span><span class="p">)</span>
+
+<span class="nv">adjust_slides_size = </span><span class="nf">($el) -&gt;</span>
+  <span class="nx">$el</span><span class="p">.</span><span class="nx">each</span> <span class="nf">(i) -&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">width</span><span class="p">(</span><span class="nx">width</span><span class="p">).</span><span class="nx">height</span><span class="p">(</span><span class="nx">height</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="nx">width</span>
+
+    <span class="nx">adjust_image_position</span> <span class="nx">$</span><span class="p">(</span><span class="s">&#39;img&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">).</span><span class="o">not</span><span class="p">(</span><span class="s">&#39;.keep-original&#39;</span><span class="p">)</span>
+
+  <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.sized&#39;</span><span class="p">)</span>
+
+<span class="nv">addPaginationItem = </span><span class="nf">(i) -&gt;</span>
+  <span class="nv">$pagination = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;.slides-pagination&quot;</span><span class="p">)</span>
+  <span class="nx">unless</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="nv">i = </span><span class="nx">size</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># size is not zero indexed</span>
+
+  <span class="nx">$pagination</span><span class="p">.</span><span class="nx">append</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;a&gt;&quot;</span><span class="p">,</span>
+    <span class="nv">href: </span><span class="s">&quot;</span><span class="err">#</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nx">i</span>
+  <span class="p">)</span>
+
+<span class="nv">start = </span><span class="o">-&gt;</span>
+  <span class="k">if</span> <span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nx">location</span><span class="p">.</span><span class="nx">hash</span>
+      <span class="nv">index = </span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^#/</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="nv">index = </span><span class="p">(</span><span class="k">if</span> <span class="nx">first_load</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="s">&quot;next&quot;</span><span class="p">)</span>
+
+    <span class="nx">animate</span> <span class="nx">index</span>
+    <span class="nx">play</span><span class="p">()</span>
+
+<span class="nv">stop = </span><span class="o">-&gt;</span>
+  <span class="nx">clearInterval</span> <span class="nx">play_interval</span>
+
+<span class="nv">play = </span><span class="o">-&gt;</span>
+  <span class="k">if</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">play</span>
+    <span class="nx">stop</span><span class="p">()</span> <span class="k">if</span> <span class="nx">play_interval</span>
+    <span class="nv">play_interval = </span><span class="nx">setInterval</span> <span class="o">-&gt;</span>
+      <span class="nx">animate</span> <span class="p">(</span><span class="k">if</span> <span class="nx">first_load</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="s">&quot;next&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">delay</span>
+
+<span class="nv">update = </span><span class="o">-&gt;</span>
+  <span class="nv">$children = </span><span class="nx">$container</span><span class="p">.</span><span class="nx">children</span><span class="p">()</span>
+  <span class="nv">size = </span><span class="nx">$children</span><span class="p">.</span><span class="nx">length</span>
+
+  <span class="nx">setup_children</span><span class="p">()</span>
+  <span class="nx">addPaginationItem</span><span class="p">()</span>
+
+  <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.updated&#39;</span><span class="p">)</span>
+
+<span class="nv">append = </span><span class="nf">($el) -&gt;</span>
+  <span class="nx">$container</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$el</span><span class="p">)</span>
+  <span class="nx">update</span><span class="p">()</span>
+
+<span class="nv">current = </span><span class="o">-&gt;</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span>
+
+<span class="nv">animate = </span><span class="nf">(direction) -&gt;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nv">current = </span><span class="p">(</span><span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">then</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="k">else</span> <span class="kc">null</span><span class="p">)</span>
+  <span class="nx">unless</span> <span class="nx">animating</span> <span class="o">||</span> <span class="nx">direction</span> <span class="o">&gt;=</span> <span class="nx">size</span> <span class="o">||</span> <span class="o">+</span><span class="nx">direction</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span>
+    <span class="nv">prev = </span><span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">||</span> <span class="o">+</span><span class="nx">direction</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">||</span> <span class="mi">0</span>
+    <span class="nv">animating = </span><span class="kc">true</span>
+    <span class="k">switch</span> <span class="nx">direction</span>
+      <span class="k">when</span> <span class="s">&#39;next&#39;</span>
+        <span class="nv">position = </span><span class="nx">width</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="nv">direction = </span><span class="o">-</span><span class="nx">position</span>
+        <span class="nv">next = </span><span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nv">next = </span><span class="mi">0</span> <span class="k">if</span> <span class="nx">size</span> <span class="o">==</span> <span class="nx">next</span>
+      <span class="k">when</span> <span class="s">&#39;prev&#39;</span>
+        <span class="nv">position = direction = </span><span class="mi">0</span>
+        <span class="nv">next = </span><span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="nv">next = </span><span class="nx">size</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="nx">next</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+      <span class="k">else</span>
+        <span class="nv">next = </span><span class="o">+</span><span class="nx">direction</span>
+        <span class="k">if</span> <span class="nx">next</span> <span class="o">&gt;</span> <span class="nx">prev</span>
+          <span class="nv">position = </span><span class="nx">width</span> <span class="o">*</span> <span class="mi">2</span>
+          <span class="nv">direction = </span><span class="o">-</span><span class="nx">position</span>
+        <span class="k">else</span>
+          <span class="nv">position = direction = </span><span class="mi">0</span>
+
+
+    <span class="nv">def1 = </span><span class="k">new</span> <span class="nx">$</span><span class="p">.</span><span class="nx">Deferred</span><span class="p">()</span>
+    <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">).</span><span class="nx">fadeOut</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s">&quot;linear&quot;</span><span class="p">,</span> <span class="p">(</span><span class="o">=&gt;</span> <span class="nx">def1</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()))</span>
+    <span class="nv">current_out = </span><span class="nx">def1</span><span class="p">.</span><span class="nx">promise</span><span class="p">()</span>
+    <span class="nx">current_out</span><span class="p">.</span><span class="nx">done</span> <span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>alert "out"</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">current_out</span><span class="p">.</span><span class="nx">fail</span> <span class="o">-&gt;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nv">current = </span><span class="nx">next</span>
+    <span class="nx">$children</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;current&#39;</span><span class="p">)</span>
+
+    <span class="nv">def2 = </span><span class="k">new</span> <span class="nx">$</span><span class="p">.</span><span class="nx">Deferred</span><span class="p">()</span>
+    <span class="nv">current_in = </span><span class="nx">def2</span><span class="p">.</span><span class="nx">promise</span><span class="p">()</span>
+    <span class="nx">current_in</span><span class="p">.</span><span class="nx">done</span> <span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>console.log this.current
+reset and show next</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">next</span><span class="p">).</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="nx">width</span>
+        <span class="nv">zIndex: </span><span class="mi">2</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>reset previous slide</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">prev</span><span class="p">).</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="nx">width</span>
+        <span class="nv">zIndex: </span><span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>reset control position</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$control</span><span class="p">.</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="o">-</span><span class="nx">width</span>
+
+      <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;current&#39;</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="nx">first_load</span>
+        <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.initialized&#39;</span><span class="p">)</span>
+        <span class="nv">first_load = </span><span class="kc">false</span>
+
+      <span class="nv">animating = </span><span class="kc">false</span>
+      <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.animated&#39;</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">,</span> <span class="nx">next</span><span class="p">,</span> <span class="nx">prev</span><span class="p">])</span>
+
+    <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">).</span><span class="nx">css</span>
+      <span class="nv">left: </span><span class="nx">position</span>
+    <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">).</span><span class="nx">fadeIn</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s">&quot;linear&quot;</span><span class="p">,</span> <span class="p">(</span><span class="o">=&gt;</span> <span class="nx">def2</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()))</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">$control</span><span class="p">.</span><span class="nx">animate</span><span class="p">(</span>
+      <span class="nv">useTranslate3d: </span><span class="p">(</span><span class="k">if</span> <span class="nx">is_mobile</span> <span class="k">then</span> <span class="kc">true</span> <span class="k">else</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="nv">left: </span><span class="nx">direction</span>
+    <span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">slide_speed</span>
+    <span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">slide_easing</span>
+    <span class="p">,</span> <span class="o">=&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>reset control position</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$control</span><span class="p">.</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="o">-</span><span class="nx">width</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>reset and show next</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">next</span><span class="p">).</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="nx">width</span>
+        <span class="nv">zIndex: </span><span class="mi">2</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>reset previous slide</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">prev</span><span class="p">).</span><span class="nx">css</span>
+        <span class="nv">left: </span><span class="nx">width</span>
+        <span class="nv">display: </span><span class="s">&#39;none&#39;</span>
+        <span class="nv">zIndex: </span><span class="mi">0</span>
+
+      <span class="nx">$children</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;current&#39;</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="nx">first_load</span>
+        <span class="nx">$container</span><span class="p">.</span><span class="nx">fadeIn</span><span class="p">(</span><span class="s">&#39;fast&#39;</span><span class="p">)</span>
+        <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.initialized&#39;</span><span class="p">)</span>
+        <span class="nv">first_load = </span><span class="kc">false</span>
+
+      <span class="nv">animating = </span><span class="kc">false</span>
+      <span class="nx">$container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;slides.animated&#39;</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">,</span> <span class="nx">next</span><span class="p">,</span> <span class="nx">prev</span><span class="p">])</span>
+    <span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Plugin</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">$.fn.superslides = </span><span class="nf">(options) -&gt;</span>
+  <span class="k">if</span> <span class="k">typeof</span> <span class="nx">options</span> <span class="o">==</span> <span class="s">&quot;string&quot;</span>
+    <span class="nv">api = </span><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">api</span>
+    <span class="nv">method = </span><span class="nx">options</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Convert arguments to real array</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">args = </span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)</span>
+    <span class="nx">args</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nx">api</span><span class="p">[</span><span class="nx">method</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+  <span class="k">else</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Defaults</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">options = $.fn.superslides.options = </span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">superslides</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">options</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Setup</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;.</span><span class="si">#{</span><span class="nx">options</span><span class="p">.</span><span class="nx">container_class</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">).</span><span class="nx">wrap</span><span class="p">(</span><span class="s">&#39;&lt;div class=&quot;slides-control&quot; /&gt;&#39;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>Cache elements</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">$control = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.slides-control&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+    <span class="nv">$container = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;.</span><span class="si">#{</span><span class="nx">options</span><span class="p">.</span><span class="nx">container_class</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="nv">$nav = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;.</span><span class="si">#{</span><span class="nx">options</span><span class="p">.</span><span class="nx">nav_class</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="nv">$children = </span><span class="nx">$container</span><span class="p">.</span><span class="nx">children</span><span class="p">()</span>
+
+    <span class="nv">size = </span><span class="nx">$children</span><span class="p">.</span><span class="nx">length</span>
+    <span class="nv">multiplier = </span><span class="p">(</span><span class="k">if</span> <span class="nx">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">each</span> <span class="o">-&gt;</span>
+      <span class="nx">setup</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>Event bindings</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span> <span class="nf">(e) -&gt;</span>
+        <span class="nv">width = </span><span class="nx">$window</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
+        <span class="nv">height = </span><span class="nx">$window</span><span class="p">.</span><span class="nx">height</span><span class="p">()</span>
+
+        <span class="nx">adjust_slides_size</span> <span class="nx">$children</span>
+
+        <span class="nx">$control</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">width</span> <span class="o">*</span> <span class="nx">multiplier</span><span class="p">).</span><span class="nx">css</span>
+          <span class="nv">height: </span><span class="nx">height</span>
+
+        <span class="k">if</span> <span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
+          <span class="nx">$control</span><span class="p">.</span><span class="nx">css</span>
+            <span class="nv">left: </span><span class="o">-</span><span class="nx">width</span>
+
+      <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;click&#39;</span><span class="p">,</span> <span class="s">&quot;.</span><span class="si">#{</span><span class="nx">options</span><span class="p">.</span><span class="nx">nav_class</span><span class="si">}</span><span class="s"> a&quot;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        <span class="nx">stop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="s">&#39;next&#39;</span><span class="p">)</span>
+          <span class="nx">animate</span> <span class="s">&#39;next&#39;</span>
+        <span class="k">else</span>
+          <span class="nx">animate</span> <span class="s">&#39;prev&#39;</span>
+
+      <span class="k">if</span> <span class="nx">options</span><span class="p">.</span><span class="nx">pagination</span>
+        <span class="nx">$window</span><span class="p">.</span><span class="kc">on</span> <span class="s">&quot;slides.initialized&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+          <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;nav&gt;&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="k">class</span><span class="o">:</span> <span class="s">&#39;slides-pagination&#39;</span><span class="p">}))</span>
+
+          <span class="nx">$children</span><span class="p">.</span><span class="nx">each</span> <span class="nf">(i) -&gt;</span>
+            <span class="nx">addPaginationItem</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+
+        <span class="p">.</span><span class="kc">on</span> <span class="s">&quot;slides.animated&quot;</span><span class="p">,</span> <span class="nf">(e, current, next, prev) -&gt;</span>
+          <span class="nv">$pagination = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;.slides-pagination&quot;</span><span class="p">)</span>
+          <span class="nx">$</span><span class="p">(</span><span class="s">&quot;.active&quot;</span><span class="p">,</span> <span class="nx">$pagination</span><span class="p">).</span><span class="nx">removeClass</span> <span class="s">&quot;active&quot;</span>
+          <span class="nx">$</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="nx">$pagination</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="nx">current</span><span class="p">).</span><span class="nx">addClass</span> <span class="s">&quot;active&quot;</span>
+
+        <span class="p">.</span><span class="kc">on</span> <span class="s">&quot;click&quot;</span><span class="p">,</span> <span class="s">&quot;.slides-pagination a&quot;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span> <span class="nx">unless</span> <span class="nx">options</span><span class="p">.</span><span class="nx">hashchange</span>
+          <span class="nv">index = </span><span class="k">this</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^#/</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+          <span class="nx">animate</span> <span class="nx">index</span>
+
+        <span class="p">.</span><span class="kc">on</span> <span class="s">&#39;hashchange&#39;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
+          <span class="nv">index = </span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^#/</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+          <span class="nx">stop</span><span class="p">()</span>
+          <span class="nx">animate</span> <span class="nx">index</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>Kick it off</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">start</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>Options</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">$.fn.superslides.options =</span>
+  <span class="nv">delay: </span><span class="mi">5000</span>
+  <span class="nv">play: </span><span class="kc">false</span>
+  <span class="nv">slide_speed: </span><span class="s">&#39;normal&#39;</span>
+  <span class="nv">slide_easing: </span><span class="s">&#39;linear&#39;</span>
+  <span class="nv">nav_class: </span><span class="s">&#39;slides-navigation&#39;</span>
+  <span class="nv">container_class: </span><span class="s">&#39;slides&#39;</span>
+  <span class="nv">pagination: </span><span class="kc">false</span>
+  <span class="nv">hashchange: </span><span class="kc">false</span>
+  <span class="nv">scrollable: </span><span class="kc">true</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>Public API methods</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">$.fn.superslides.api =</span>
+  <span class="nv">start: </span><span class="o">-&gt;</span>
+    <span class="nx">start</span><span class="p">()</span>
+  <span class="nv">stop: </span><span class="o">-&gt;</span>
+    <span class="nx">stop</span><span class="p">()</span>
+  <span class="nv">play: </span><span class="o">-&gt;</span>
+    <span class="nx">play</span><span class="p">()</span>
+  <span class="nv">append: </span><span class="nf">($el) -&gt;</span>
+    <span class="nx">append</span><span class="p">(</span><span class="nx">$el</span><span class="p">)</span>
+  <span class="nv">animate: </span><span class="nf">(direction) -&gt;</span>
+    <span class="nx">stop</span><span class="p">()</span>
+    <span class="nx">animate</span><span class="p">(</span><span class="nx">direction</span><span class="p">)</span>
+  <span class="nv">next: </span><span class="o">-&gt;</span>
+    <span class="nx">animate</span><span class="p">(</span><span class="s">&#39;next&#39;</span><span class="p">)</span>
+  <span class="nv">prev: </span><span class="o">-&gt;</span>
+    <span class="nx">animate</span><span class="p">(</span><span class="s">&#39;prev&#39;</span><span class="p">)</span>
+  <span class="nv">current: </span><span class="o">-&gt;</span>
+    <span class="nx">current</span><span class="p">()</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
