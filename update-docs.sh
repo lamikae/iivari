@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Document source branch
-branch=develop+work
+branch=develop
 
 function die {
 	echo $1 1>&2
